@@ -1,0 +1,10 @@
+*.exe
+!CreateMain.exe
+*.sdf
+*.opensdf
+*.suo
+*.user
+ipch
+Debug
+Release
+/UnitTester/Defines.h
