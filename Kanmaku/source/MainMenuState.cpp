@@ -17,6 +17,8 @@
 #include "GameplayState.h"
 #include "OptionMenuState.h"
 
+//debug
+#include <iostream>
 
 //*********************************************************************//
 // GetInstance
@@ -110,26 +112,18 @@
 
 
 	// Move the cursor?
-	if( pInput->IsKeyPressed( SGD::Key::Down ) == true )
-	{
+	if( pInput->IsKeyPressed( SGD::Key::Down ) == true ) {
 		// next option
 		m_nCursor++;
-
 		// wrap around
-		if( m_nCursor > 1 )
+		if( m_nCursor > 4 )
 			m_nCursor = 0;
-		SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
-	}
-	else if( pInput->IsKeyPressed( SGD::Key::Up ) == true ) 
-	{
+	} else if( pInput->IsKeyPressed( SGD::Key::Up ) == true )  {
 		// prev option
 		m_nCursor--;
-
 		// wrap around
 		if( m_nCursor < 0 )
-			m_nCursor = 1;
-		SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
-
+			m_nCursor = 4;
 	}
 
 
@@ -150,24 +144,27 @@
 		}
 	}
 
-	//if( pInput->IsKeyPressed( SGD::Key::Enter ) == true )
-	//{
-	//	// Which option is chosen?
-	//	if( m_nCursor == 0 )
-	//	{
-	//		// ChangeState is VERY VOLATILE!!!
-	//		//	- can only be safely called by a game state's
-	//		//	 Update or Render methods!
-	//		Game::GetInstance()->ChangeState( GameplayState::GetInstance() );
+	if( pInput->IsKeyPressed( SGD::Key::Enter ) == true ) {
 
-	//		// Exit this state immediately
-	//		return true;	// keep playing in the new state
-	//	}
-	//	else //m_nCursor == 1
-	//	{
-	//		return false;	// quit the game
-	//	}
-	//}
+		switch (m_nCursor) {
+			case 0: { break; }
+			case 1:	{ break; }
+			case 2:	{ return false; break; }
+			case 3:	{ Game::GetInstance()->ChangeState(GameplayState::GetInstance()); return true; break; }
+			case 4:	{ Game::GetInstance()->ChangeState(OptionMenuState::GetInstance()); return true; break; }
+		}
+		
+		//// Which option is chosen?
+		//if( m_nCursor == 0 ) {
+		//	Game::GetInstance()->ChangeState( GameplayState::GetInstance() );
+
+		//	// Exit this state immediately
+		//	return true;	// keep playing in the new state
+		//} else //m_nCursor == 1
+		//{
+		//	return false;	// quit the game
+		//}
+	}
 
 	
 	return true;	// keep playing
@@ -185,7 +182,7 @@
 	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg, SGD::Point{ 0, 0 });
 
 	if ((pInput->GetCursorPosition().x > 500 && pInput->GetCursorPosition().x < 969) &&
-		(pInput->GetCursorPosition().y > 800 && pInput->GetCursorPosition().y < 903)) {
+		(pInput->GetCursorPosition().y > 800 && pInput->GetCursorPosition().y < 903) || m_nCursor == 3) {
 		SGD::GraphicsManager::GetInstance()->DrawTextureSection(m_hStartImg, SGD::Point{ 500, 800 }, SGD::Rectangle{ 0, 0, 469, 103 }, 0.0f, {}, SGD::Color{255, 255, 255, 255 });
 		if (!m_bCursorStartSe) {
 			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
@@ -201,10 +198,11 @@
 	SGD::Point ptOffset = SGD::Point{ (SGD::Point(25, 950).x - SGD::Point(64, 64).x / 2), (SGD::Point(25, 950).y - SGD::Point(64, 64).y / 2) };
 
 	if ((pInput->GetCursorPosition().x > 25 && pInput->GetCursorPosition().x < 25 + 64) &&
-		(pInput->GetCursorPosition().y > 950 && pInput->GetCursorPosition().y < 950 + 64)) {
+		(pInput->GetCursorPosition().y > 950 && pInput->GetCursorPosition().y < 950 + 64) || m_nCursor == 4) {
 
 
 		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hOptionImg, { 25, 950 }, m_fRotation, SGD::Vector{ 32, 32 }, SGD::Color{ 255, 255, 255, 255 });
+
 		if (!m_bCursorOptionSe) {
 			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
 			m_bCursorOptionSe = true;
@@ -225,9 +223,54 @@
 
 
 	// Display the game title centered at 4x scale
-	pFont->Draw( "Kantai Danmaku", { (width - (14 * 32 * 2.0f))/2, 80 }, 
-				 2.0f, { 255, 255, 255 } );
+	pFont->Draw( 
+		"Kantai Danmaku", 
+		{ (width - (14 * 32 * 2.0f))/2, 80 }, 
+		2.0f, { 255, 255, 255 } 
+	);
 
+	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 960) &&
+		(pInput->GetCursorPosition().y > 652 && pInput->GetCursorPosition().y < 672) || m_nCursor == 0) {
+		pFont->Draw("HOW TO PLAY", SGD::Point{ 680, 650 }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
+		if (!m_bCursorHTPSe) {
+			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
+			m_bCursorHTPSe = true;
+		}
+
+	} else {
+		pFont->Draw("HOW TO PLAY", SGD::Point{ 680, 650 }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
+		m_bCursorHTPSe = false;
+	}
+
+	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 855) &&
+		(pInput->GetCursorPosition().y > 702 && pInput->GetCursorPosition().y < 722) || m_nCursor == 1) {
+		pFont->Draw("CREDITS", SGD::Point{ 680, 700 }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
+		if (!m_bCursorCreditSe) {
+			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
+			m_bCursorCreditSe = true;
+		}
+	} else {
+		pFont->Draw("CREDITS", SGD::Point{ 680, 700 }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
+		m_bCursorCreditSe = false;
+	}
+
+	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 775) &&
+		(pInput->GetCursorPosition().y > 752 && pInput->GetCursorPosition().y < 772) || m_nCursor == 2) {
+		pFont->Draw("EXIT", SGD::Point{ 680, 750 }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
+		if (!m_bCursorExitSe) {
+			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
+			m_bCursorExitSe = true;
+		}
+	} else {
+		pFont->Draw("EXIT", SGD::Point{ 680, 750 }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
+		m_bCursorExitSe = false;
+	}
+
+#if _DEBUG
+	system("cls");
+	std::cout << "X: " <<pInput->GetCursorPosition().x << " Y: " << pInput->GetCursorPosition().y << std::endl;
+	
+#endif
 
 
 	//// Display the menu options centered at 1x scale

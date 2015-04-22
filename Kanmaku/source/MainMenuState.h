@@ -61,6 +61,9 @@ private:
 	// play se 
 	bool m_bCursorStartSe = false;
 	bool m_bCursorOptionSe = false;
+	bool m_bCursorHTPSe = false;
+	bool m_bCursorCreditSe = false;
+	bool m_bCursorExitSe = false;
 
 	// option effect
 	float m_fRotation = 0.0f;

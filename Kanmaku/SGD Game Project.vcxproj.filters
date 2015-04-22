@@ -90,6 +90,9 @@
     <ClCompile Include="source\OptionMenuState.cpp">
       <Filter>Game States</Filter>
     </ClCompile>
+    <ClCompile Include="source\CreditsState.cpp">
+      <Filter>Game States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\SGD_Declarations.h">
@@ -177,6 +180,9 @@
       <Filter>Miscellaneous</Filter>
     </ClInclude>
     <ClInclude Include="source\OptionMenuState.h">
+      <Filter>Game States</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CreditsState.h">
       <Filter>Game States</Filter>
     </ClInclude>
   </ItemGroup>

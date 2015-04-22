@@ -83,7 +83,7 @@ bool Game::Initialize( void )
 	m_pFont = new BitmapFont;
 	m_pFont->Initialize();
 
-	SGD::GraphicsManager::GetInstance()->Resize({1920,1080});
+	//SGD::GraphicsManager::GetInstance()->Resize({1920,1080});
 
 	// Start in the MainMenuState
 	ChangeState( MainMenuState::GetInstance() );

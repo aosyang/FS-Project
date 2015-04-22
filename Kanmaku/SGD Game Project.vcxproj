@@ -93,6 +93,7 @@
     <ClCompile Include="source\AnchorPointAnimation.cpp" />
     <ClCompile Include="source\BitmapFont.cpp" />
     <ClCompile Include="source\CellAnimation.cpp" />
+    <ClCompile Include="source\CreditsState.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\EntityManager.cpp" />
     <ClCompile Include="source\Game.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="source\AnchorPointAnimation.h" />
     <ClInclude Include="source\BitmapFont.h" />
     <ClInclude Include="source\CellAnimation.h" />
+    <ClInclude Include="source\CreditsState.h" />
     <ClInclude Include="source\Entity.h" />
     <ClInclude Include="source\EntityManager.h" />
     <ClInclude Include="source\Game.h" />

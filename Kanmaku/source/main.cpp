@@ -5,14 +5,17 @@
 //	Purpose:	Application entry point
 //*********************************************************************//
 
-#include <vld.h>			// Visual Leak Detector
+//#include <vld.h>			// Visual Leak Detector
 #include "Game.h"			// Game singleton class
 
-
+#include <crtdbg.h>
 //*********************************************************************//
 // main
 //	- application entry point
 int main( void ) {
+
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	// Initialize game:
 	if( Game::GetInstance()->Initialize( ) == false )
 		return -1;	// failure!!!
