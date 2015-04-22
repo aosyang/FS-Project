@@ -8,6 +8,7 @@
 #pragma once
 
 #include "IGameState.h"
+#include "../SGD Wrappers/SGD_Handle.h"
 
 
 //*********************************************************************//
@@ -42,8 +43,26 @@ private:
 	MainMenuState& operator= ( const MainMenuState& )	= delete;	// assignment operator
 
 
+	// background image
+	SGD::HTexture	m_hBackgroundImg = SGD::INVALID_HANDLE;
+	SGD::HTexture	m_hStartImg = SGD::INVALID_HANDLE;
+	SGD::HTexture	m_hOptionImg = SGD::INVALID_HANDLE;
+
+	// background image
+	SGD::HAudio		m_hBackgroundMus = SGD::INVALID_HANDLE;
+
+	// introducing se
+	SGD::HAudio		m_hIntroMenuSe = SGD::INVALID_HANDLE;
+
 	//*****************************************************************//
 	// cursor index / position
 	int m_nCursor = 0;
+
+	// play se 
+	bool m_bCursorStartSe = false;
+	bool m_bCursorOptionSe = false;
+
+	// option effect
+	float m_fRotation = 0.0f;
 };
 

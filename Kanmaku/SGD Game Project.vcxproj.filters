@@ -87,6 +87,9 @@
     <ClCompile Include="source\AnchorPointAnimation.cpp">
       <Filter>Miscellaneous</Filter>
     </ClCompile>
+    <ClCompile Include="source\OptionMenuState.cpp">
+      <Filter>Game States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\SGD_Declarations.h">
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="source\AnchorPointAnimation.h">
       <Filter>Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="source\OptionMenuState.h">
+      <Filter>Game States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

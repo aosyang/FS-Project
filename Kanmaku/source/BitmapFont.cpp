@@ -23,7 +23,7 @@
 void BitmapFont::Initialize( void )
 {
 	m_hImage = SGD::GraphicsManager::GetInstance()->LoadTexture(
-				L"resource/graphics/SGD_Font_Glow.png" );
+				L"resource/graphics/SGD_Font_Cus.png" );
 
 	m_nNumCols			= 10;
 	m_nCharWidth		= 32;

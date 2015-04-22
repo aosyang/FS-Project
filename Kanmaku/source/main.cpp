@@ -12,8 +12,7 @@
 //*********************************************************************//
 // main
 //	- application entry point
-int main( void )
-{
+int main( void ) {
 	// Initialize game:
 	if( Game::GetInstance()->Initialize( ) == false )
 		return -1;	// failure!!!

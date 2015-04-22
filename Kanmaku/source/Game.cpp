@@ -64,7 +64,7 @@ bool Game::Initialize( void )
 
 	// Try to initialize the wrappers
 	// (Graphics Manager MUST be first!)
-	if( SGD::GraphicsManager::GetInstance()->Initialize( L"SGD Game Project", m_szScreenSize, false ) == false
+	if( SGD::GraphicsManager::GetInstance()->Initialize( L"SGD Game Project - Kanmaku", m_szScreenSize, false ) == false
 		|| SGD::InputManager::GetInstance()->Initialize() == false 
 		|| SGD::AudioManager::GetInstance()->Initialize() == false )
 		return false;	// failure!!!
@@ -83,6 +83,7 @@ bool Game::Initialize( void )
 	m_pFont = new BitmapFont;
 	m_pFont->Initialize();
 
+	SGD::GraphicsManager::GetInstance()->Resize({1920,1080});
 
 	// Start in the MainMenuState
 	ChangeState( MainMenuState::GetInstance() );

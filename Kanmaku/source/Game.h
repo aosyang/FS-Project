@@ -69,7 +69,7 @@ private:
 
 	//*****************************************************************//
 	// Screen Size
-	SGD::Size		m_szScreenSize		= SGD::Size{ 1024, 768 };
+	SGD::Size		m_szScreenSize		= SGD::Size{ 1024, 1024 };
 	
 	// Font
 	BitmapFont*		m_pFont				= nullptr;

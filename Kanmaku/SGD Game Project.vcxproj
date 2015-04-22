@@ -99,6 +99,7 @@
     <ClCompile Include="source\GameplayState.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MainMenuState.cpp" />
+    <ClCompile Include="source\OptionMenuState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\SGD_AudioManager.h" />
@@ -129,6 +130,7 @@
     <ClInclude Include="source\IGameState.h" />
     <ClInclude Include="source\MainMenuState.h" />
     <ClInclude Include="source\MessageID.h" />
+    <ClInclude Include="source\OptionMenuState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
