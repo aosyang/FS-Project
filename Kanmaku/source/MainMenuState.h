@@ -48,7 +48,7 @@ private:
 	SGD::HTexture	m_hStartImg = SGD::INVALID_HANDLE;
 	SGD::HTexture	m_hOptionImg = SGD::INVALID_HANDLE;
 
-	// background image
+	// background music
 	SGD::HAudio		m_hBackgroundMus = SGD::INVALID_HANDLE;
 
 	// introducing se

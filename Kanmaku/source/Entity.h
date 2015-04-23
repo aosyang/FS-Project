@@ -30,7 +30,7 @@ protected:	virtual ~Entity( void )	= default;		// protected to force reference c
 public:
 	//*****************************************************************//
 	// Entity Types:
-	enum EntityType { ENT_BASE, };
+	enum EntityType { ENT_BASE, ENT_PLAYER, ENT_BULLET_TYPE_A,  };
 
 
 	//*****************************************************************//

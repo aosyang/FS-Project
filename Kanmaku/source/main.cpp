@@ -5,7 +5,7 @@
 //	Purpose:	Application entry point
 //*********************************************************************//
 
-//#include <vld.h>			// Visual Leak Detector
+#include <vld.h>			// Visual Leak Detector
 #include "Game.h"			// Game singleton class
 
 #include <crtdbg.h>

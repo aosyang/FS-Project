@@ -189,9 +189,13 @@ void EntityManager::UpdateAll( float elapsedTime )
 }
 
 
+
+
 //*********************************************************************//
 // RenderAll
 //	- render each entity in the table
+
+#if 1
 void EntityManager::RenderAll( void )
 {
 	// Validate the iteration state
@@ -212,7 +216,36 @@ void EntityManager::RenderAll( void )
 	// Unlock the iterator
 	m_bIterating = false;
 }
+#else 0
+//	- render each entity in the table
+void EntityManager::RenderAll() {
+	// Validate the iteration state
+	SGD_ASSERT(m_bIterating == false,
+		"EntityManager::RenderAll - cannot render while iterating");
 
+	std::vector<IEntity*> priorityQueue;
+	std::vector<IEntity*>::iterator priorityIter;
+
+	// Lock the iterator
+	m_bIterating = true;
+	{
+		for (unsigned int bucket = 0; bucket < m_tEntities.size(); bucket++) {
+			EntityVector& vec = m_tEntities[bucket];
+			for (unsigned int i = 0; i < vec.size(); i++)
+				priorityQueue.push_back(vec[i]);
+		}
+	}
+	// Unlock the iterator
+	m_bIterating = false;
+
+	std::qsort(&priorityQueue[0], priorityQueue.size(), sizeof(IEntity*), zsortfunc);
+
+	for (priorityIter = priorityQueue.begin(); priorityIter != priorityQueue.end(); priorityIter++) {
+		(*priorityIter)->Render();
+	}
+}
+
+#endif
 
 //*********************************************************************//
 // CheckCollisions

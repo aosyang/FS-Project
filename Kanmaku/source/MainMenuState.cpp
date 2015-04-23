@@ -300,13 +300,4 @@
 #endif
 
 
-	//// Display the menu options centered at 1x scale
-	//pFont->Draw( "PLAY", { (width - (4 * 32))/2, 300 }, 
-	//			 1.0f, {255, 0, 0} );
-	//pFont->Draw( "Exit", { (width - (4 * 32))/2, 350 }, 
-	//			 1.0f, {255, 0, 0} );
-
-	//// Display the cursor next to the option
-	//pFont->Draw( "=      =", { (width - (8 * 32))/2, 300.0f + 50*m_nCursor }, 
-	//			 1.0f, {0, 255, 0} );
 }

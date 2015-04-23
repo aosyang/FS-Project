@@ -26,10 +26,20 @@
 #include "EntityManager.h"
 #include "Entity.h"
 
+#include "Player.h"
+
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <cstdlib>
 #include <cassert>
+
+#if _DEBUG
+#include <iostream>
+#endif
+
+//***********************************************************************
+// Entity Manager Buckets
+enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER };
 
 
 //*********************************************************************//
@@ -57,6 +67,8 @@
 	// loading assets
 #if _DEBUG
 	m_hBackgroundImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG.png");
+	m_hPlayerImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_PlayerEntity.png");
+
 #else
 
 #endif
@@ -64,11 +76,24 @@
 	// Allocate the Entity Manager
 	m_pEntities = new EntityManager;
 
+	// Initialize the player's entity
+	m_pPlayer = CreatePlayer();
+	m_pEntities->AddEntity(m_pPlayer, BUCKET_PLAYER);
+
+
 	// Setting World Size
 	m_szWorldSize = SGD::Size{ 2048, 1024 };
 
-
 	
+}
+
+Entity* GameplayState::CreatePlayer() const {
+	Player* pPlayer = new Player;
+	pPlayer->SetImage(m_hPlayerImg);
+	pPlayer->SetSize(SGD::Size(64, 64));
+	pPlayer->SetPosition(SGD::Point(200, 660));
+	return pPlayer;
+
 }
 
 
@@ -79,11 +104,17 @@
 /*virtual*/ void GameplayState::Exit( void )	/*override*/
 {
 
+	if (m_pPlayer != nullptr) {
+		m_pPlayer->Release();
+		m_pPlayer = nullptr;
+	}
+
 	// Unload the resources
 	SGD::GraphicsManager*	pGraphics = SGD::GraphicsManager::GetInstance();
 	SGD::AudioManager*		pAudio = SGD::AudioManager::GetInstance();
 
 	pGraphics->UnloadTexture(m_hBackgroundImg);
+	pGraphics->UnloadTexture(m_hPlayerImg);
 
 
 	//pAudio->UnloadAudio(m_hBackgroundMus);
@@ -107,6 +138,7 @@
 }
 
 
+
 //*********************************************************************//
 // Update
 //	- handle input & update entities
@@ -126,9 +158,9 @@
 		return true;	// keep playing in the new state
 	}
 
+	
 	// draw the background image
 	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg, -m_ptWorldCamPosition);
-	
 	
 	// Update the entities
 	m_pEntities->UpdateAll( elapsedTime );
@@ -136,7 +168,7 @@
 
 	//World Cam Update
 	//m_ptWorldCamPosition = m_pTank->GetPosition() - m_szScreenSize / 2;
-	//m_ptWorldCamPosition = m_pTank->GetPosition() - Game::GetInstance()->GetScreenSize() / 2;
+	m_ptWorldCamPosition = m_pPlayer->GetPosition() + SGD::Size(0,-256) - Game::GetInstance()->GetScreenSize() / 2;
 
 
 	
@@ -148,6 +180,13 @@
 	//	- all the messages will be sent to our MessageProc
 	SGD::MessageManager::GetInstance()->Update();
 
+
+#if _DEBUG
+	system("cls");
+	std::cout << "X: " << pInput->GetCursorPosition().x << " Y: " << pInput->GetCursorPosition().y << std::endl;
+
+#endif
+
 	return true;	// keep playing
 }
 
@@ -155,10 +194,14 @@
 //*********************************************************************//
 // Render
 //	- render the game entities
-/*virtual*/ void GameplayState::Render( float elapsedTime )	/*override*/
-{
+/*virtual*/ void GameplayState::Render( float elapsedTime )	/*override*/ {
+
+	
+
 	// Render the entities
 	m_pEntities->RenderAll();
+
+	
 }
 
 
