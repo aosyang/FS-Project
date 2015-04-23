@@ -54,9 +54,18 @@
 	SGD::EventManager::GetInstance()->Initialize();
 	SGD::MessageManager::GetInstance()->Initialize( &GameplayState::MessageProc );
 
+	// loading assets
+#if _DEBUG
+	m_hBackgroundImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG.png");
+#else
+
+#endif
+
 	// Allocate the Entity Manager
 	m_pEntities = new EntityManager;
 
+	// Setting World Size
+	m_szWorldSize = SGD::Size{ 2048, 1024 };
 
 
 	
@@ -70,7 +79,15 @@
 /*virtual*/ void GameplayState::Exit( void )	/*override*/
 {
 
+	// Unload the resources
+	SGD::GraphicsManager*	pGraphics = SGD::GraphicsManager::GetInstance();
+	SGD::AudioManager*		pAudio = SGD::AudioManager::GetInstance();
 
+	pGraphics->UnloadTexture(m_hBackgroundImg);
+
+
+	//pAudio->UnloadAudio(m_hBackgroundMus);
+	//pAudio->UnloadAudio(m_hIntroMenuSe);
 
 
 	// Release game entities
@@ -108,11 +125,18 @@
 		// Exit this state immediately
 		return true;	// keep playing in the new state
 	}
+
+	// draw the background image
+	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg, -m_ptWorldCamPosition);
 	
 	
 	// Update the entities
 	m_pEntities->UpdateAll( elapsedTime );
 	
+
+	//World Cam Update
+	//m_ptWorldCamPosition = m_pTank->GetPosition() - m_szScreenSize / 2;
+	//m_ptWorldCamPosition = m_pTank->GetPosition() - Game::GetInstance()->GetScreenSize() / 2;
 
 
 	

@@ -102,7 +102,7 @@
 	}
 
 	if ((pInput->GetCursorPosition().x > 130 && pInput->GetCursorPosition().x < 130 + 135) &&
-		(pInput->GetCursorPosition().y > 850 && pInput->GetCursorPosition().y < 850 + 64)) {
+		(pInput->GetCursorPosition().y > 850 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 850 + 64 - SCREEN_OFFSET)) {
 
 		if (pInput->IsKeyPressed(SGD::Key::MouseLeft)) {
 			Game::GetInstance()->ChangeState(MainMenuState::GetInstance());
@@ -111,7 +111,7 @@
 	}
 
 	if ((pInput->GetCursorPosition().x > 118 && pInput->GetCursorPosition().x < 118 + MAX_VOLUME) &&
-		(pInput->GetCursorPosition().y > 650 && pInput->GetCursorPosition().y < 650 + 8)) {
+		(pInput->GetCursorPosition().y > 650 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 650 + 8 - SCREEN_OFFSET)) {
 
 		if (pInput->IsKeyDown(SGD::Key::MouseLeft)) {
 			m_fVolumeBGM = pInput->GetCursorPosition().x - 118;
@@ -120,7 +120,7 @@
 	}
 
 	if ((pInput->GetCursorPosition().x > 118 && pInput->GetCursorPosition().x < 118 + MAX_VOLUME) &&
-		(pInput->GetCursorPosition().y > 760 && pInput->GetCursorPosition().y < 760 + 8)) {
+		(pInput->GetCursorPosition().y > 760 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 760 + 8 - SCREEN_OFFSET)) {
 
 		if (pInput->IsKeyDown(SGD::Key::MouseLeft)) {
 			m_fVolumeSE = pInput->GetCursorPosition().x - 118;
@@ -146,18 +146,18 @@
 	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg, SGD::Point{ 0, 0 });
 
 	if ((pInput->GetCursorPosition().x > 130 && pInput->GetCursorPosition().x < 130 + 135) &&
-		(pInput->GetCursorPosition().y > 850 && pInput->GetCursorPosition().y < 850 + 64)) {
-		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hArrowImg, SGD::Point{ 130, 850 }, 0.0f, {}, SGD::Color{ 250, 255, 255, 255 });
+		(pInput->GetCursorPosition().y > 850 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 850 + 64 - SCREEN_OFFSET)) {
+		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hArrowImg, SGD::Point{ 130, 850 - SCREEN_OFFSET }, 0.0f, {}, SGD::Color{ 250, 255, 255, 255 });
 
 	} else {
-		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hArrowImg, SGD::Point{ 130, 850 }, 0.0f, {}, SGD::Color{ 180, 255, 255, 255 });
+		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hArrowImg, SGD::Point{ 130, 850 - SCREEN_OFFSET }, 0.0f, {}, SGD::Color{ 180, 255, 255, 255 });
 
 	}
 
 
-	SGD::GraphicsManager::GetInstance()->DrawLine(SGD::Point{ 118, 650 }, SGD::Point{ 118 + m_fVolumeBGM, 650 }, SGD::Color{ 255, 0, 255, 0 }, 6);
+	SGD::GraphicsManager::GetInstance()->DrawLine(SGD::Point{ 118, 650 - SCREEN_OFFSET }, SGD::Point{ 118 + m_fVolumeBGM, 650 - SCREEN_OFFSET }, SGD::Color{ 255, 0, 255, 0 }, 6);
 
-	SGD::GraphicsManager::GetInstance()->DrawLine(SGD::Point{ 118, 760 }, SGD::Point{ 118 + m_fVolumeSE, 760 }, SGD::Color{ 255, 255, 255, 0 }, 6);
+	SGD::GraphicsManager::GetInstance()->DrawLine(SGD::Point{ 118, 760 - SCREEN_OFFSET }, SGD::Point{ 118 + m_fVolumeSE, 760 - SCREEN_OFFSET }, SGD::Color{ 255, 255, 255, 0 }, 6);
 
 	// Access the bitmap font
 	BitmapFont* pFont = Game::GetInstance()->GetFont();
@@ -175,8 +175,8 @@
 	std::string se_lv = std::to_string((int)((m_fVolumeSE) / MAX_VOLUME * 100.0f));
 	
 	
-	pFont->Draw(bgm_lv.c_str(), SGD::Point{ 300, 580 }, 0.8f, SGD::Color{ 255, 255, 255 });
-	pFont->Draw(se_lv.c_str(), SGD::Point{ 300, 690 }, 0.8f, SGD::Color{ 255, 255, 255 });
+	pFont->Draw(bgm_lv.c_str(), SGD::Point{ 300, 580 - SCREEN_OFFSET }, 0.8f, SGD::Color{ 255, 255, 255 });
+	pFont->Draw(se_lv.c_str(), SGD::Point{ 300, 690 - SCREEN_OFFSET }, 0.8f, SGD::Color{ 255, 255, 255 });
 
 	//// Display the menu options centered at 1x scale
 	//pFont->Draw( "PLAY", { (width - (4 * 32))/2, 300 }, 

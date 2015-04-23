@@ -8,6 +8,7 @@
 
 #pragma once
 
+#define SCREEN_OFFSET 256
 
 //*********************************************************************//
 // IGameState class

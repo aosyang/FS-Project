@@ -83,8 +83,6 @@ bool Game::Initialize( void )
 	m_pFont = new BitmapFont;
 	m_pFont->Initialize();
 
-	//SGD::GraphicsManager::GetInstance()->Resize({1920,1080});
-
 	// Start in the MainMenuState
 	ChangeState( MainMenuState::GetInstance() );
 	
@@ -122,6 +120,16 @@ int	Game::Update( void )
 		return +1;	// exit success
 
 	m_pCurrState->Render( elapsedTime );
+
+	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::Alt) && SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::Enter)) {
+		SGD::GraphicsManager::GetInstance()->Resize(m_szScreenSize, m_bFullScreen);
+		if (!m_bFullScreen) {
+			m_bFullScreen = true;
+		} else {
+			m_bFullScreen = false;
+
+		}
+	}
 
 	return 0;		// keep running
 }

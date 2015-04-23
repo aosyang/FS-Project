@@ -10,6 +10,8 @@
 #include "IGameState.h"							// uses IGameState
 #include "../SGD Wrappers/SGD_Handle.h"			// uses HTexture & HAudio
 #include "../SGD Wrappers/SGD_Declarations.h"	// uses Message
+#include "../SGD Wrappers/SGD_Geometry.h"
+
 
 
 //*********************************************************************//
@@ -42,6 +44,10 @@ public:
 	virtual void	Render	( float elapsedTime )	override;	// render game entities / menus
 
 
+	//World Accessors
+	SGD::Size GetWorldSize() { return m_szWorldSize; }
+	SGD::Point GetWorldCamPosition() { return m_ptWorldCamPosition; }
+
 private:
 	//*****************************************************************//
 	// SINGLETON (not-dynamically allocated)
@@ -51,6 +57,15 @@ private:
 	GameplayState( const GameplayState& )				= delete;	// copy constructor
 	GameplayState& operator= ( const GameplayState& )	= delete;	// assignment operator
 		
+
+	//World
+	SGD::Size m_szWorldSize;
+	SGD::Point m_ptWorldCamPosition;
+
+	//*******************************************************************
+	// Game Assets:
+	SGD::HTexture	m_hBackgroundImg = SGD::INVALID_HANDLE;
+	
 	
 	//*****************************************************************//
 	// Game Entities

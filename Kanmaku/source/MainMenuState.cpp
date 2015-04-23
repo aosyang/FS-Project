@@ -128,21 +128,50 @@
 
 
 	// Select an option?
+
+	// How to play
+	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 960) &&
+		(pInput->GetCursorPosition().y > 652 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 672 - SCREEN_OFFSET)) {
+		if (pInput->IsKeyPressed(SGD::Key::MouseLeft)) {
+
+		}
+	}
+
+	// Credits
+	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 855) &&
+		(pInput->GetCursorPosition().y > 702 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 722 - SCREEN_OFFSET)) {
+		if (pInput->IsKeyPressed(SGD::Key::MouseLeft)) {
+			
+		}
+	}
+
+	// exit
+	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 775) &&
+		(pInput->GetCursorPosition().y > 752 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 772 - SCREEN_OFFSET)) {
+		if (pInput->IsKeyPressed(SGD::Key::MouseLeft)) {
+			return false;
+		}
+	}
+
+	// Start game
 	if ((pInput->GetCursorPosition().x > 500 && pInput->GetCursorPosition().x < 969) &&
-		(pInput->GetCursorPosition().y > 800 && pInput->GetCursorPosition().y < 903)) {
+		(pInput->GetCursorPosition().y > 800 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 903 - SCREEN_OFFSET)) {
 		if (pInput->IsKeyPressed(SGD::Key::MouseLeft)) {
 			Game::GetInstance()->ChangeState(GameplayState::GetInstance());
 			return true;
 		}
 	}
-
+	
+	//Option
 	if ((pInput->GetCursorPosition().x > 25 && pInput->GetCursorPosition().x < 25 + 64) &&
-		(pInput->GetCursorPosition().y > 950 && pInput->GetCursorPosition().y < 950 + 64)) {
+		(pInput->GetCursorPosition().y > 950 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 950 + 64 - SCREEN_OFFSET)) {
 		if (pInput->IsKeyPressed(SGD::Key::MouseLeft)) {
 			Game::GetInstance()->ChangeState(OptionMenuState::GetInstance());
 			return true;
 		}
 	}
+
+	
 
 	if( pInput->IsKeyPressed( SGD::Key::Enter ) == true ) {
 
@@ -182,26 +211,24 @@
 	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg, SGD::Point{ 0, 0 });
 
 	if ((pInput->GetCursorPosition().x > 500 && pInput->GetCursorPosition().x < 969) &&
-		(pInput->GetCursorPosition().y > 800 && pInput->GetCursorPosition().y < 903) || m_nCursor == 3) {
-		SGD::GraphicsManager::GetInstance()->DrawTextureSection(m_hStartImg, SGD::Point{ 500, 800 }, SGD::Rectangle{ 0, 0, 469, 103 }, 0.0f, {}, SGD::Color{255, 255, 255, 255 });
+		(pInput->GetCursorPosition().y > 800 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 903 - SCREEN_OFFSET) || m_nCursor == 3) {
+		SGD::GraphicsManager::GetInstance()->DrawTextureSection(m_hStartImg, SGD::Point{ 500, 800 - SCREEN_OFFSET }, SGD::Rectangle{ 0, 0, 469, 103 }, 0.0f, {}, SGD::Color{ 255, 255, 255, 255 });
 		if (!m_bCursorStartSe) {
 			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
 			m_bCursorStartSe = true;
 		}
 
 	} else {
-		SGD::GraphicsManager::GetInstance()->DrawTextureSection(m_hStartImg, SGD::Point{ 500, 800 }, SGD::Rectangle{ 0, 0, 469, 103 }, 0.0f, {}, SGD::Color{ 180, 255, 255, 255 });
+		SGD::GraphicsManager::GetInstance()->DrawTextureSection(m_hStartImg, SGD::Point{ 500, 800 - SCREEN_OFFSET }, SGD::Rectangle{ 0, 0, 469, 103 }, 0.0f, {}, SGD::Color{ 180, 255, 255, 255 });
 		m_bCursorStartSe = false;
 	}
 
-	// offset for the option button
-	SGD::Point ptOffset = SGD::Point{ (SGD::Point(25, 950).x - SGD::Point(64, 64).x / 2), (SGD::Point(25, 950).y - SGD::Point(64, 64).y / 2) };
 
 	if ((pInput->GetCursorPosition().x > 25 && pInput->GetCursorPosition().x < 25 + 64) &&
-		(pInput->GetCursorPosition().y > 950 && pInput->GetCursorPosition().y < 950 + 64) || m_nCursor == 4) {
+		(pInput->GetCursorPosition().y > 950 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 950 + 64 - SCREEN_OFFSET) || m_nCursor == 4) {
 
 
-		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hOptionImg, { 25, 950 }, m_fRotation, SGD::Vector{ 32, 32 }, SGD::Color{ 255, 255, 255, 255 });
+		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hOptionImg, { 25, 950 - SCREEN_OFFSET }, m_fRotation, SGD::Vector{ 32, 32 }, SGD::Color{ 255, 255, 255, 255 });
 
 		if (!m_bCursorOptionSe) {
 			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
@@ -209,7 +236,7 @@
 		}
 
 	} else {
-		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hOptionImg, { 25, 950 }, m_fRotation, SGD::Vector{ 32, 32 }, SGD::Color{ 180, 255, 255, 255 });
+		SGD::GraphicsManager::GetInstance()->DrawTexture(m_hOptionImg, { 25, 950 - SCREEN_OFFSET }, m_fRotation, SGD::Vector{ 32, 32 }, SGD::Color{ 180, 255, 255, 255 });
 		m_bCursorOptionSe = false;
 	}
 
@@ -230,39 +257,39 @@
 	);
 
 	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 960) &&
-		(pInput->GetCursorPosition().y > 652 && pInput->GetCursorPosition().y < 672) || m_nCursor == 0) {
-		pFont->Draw("HOW TO PLAY", SGD::Point{ 680, 650 }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
+		(pInput->GetCursorPosition().y > 652 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 672 - SCREEN_OFFSET) || m_nCursor == 0) {
+		pFont->Draw("HOW TO PLAY", SGD::Point{ 680, 650 - SCREEN_OFFSET }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
 		if (!m_bCursorHTPSe) {
 			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
 			m_bCursorHTPSe = true;
 		}
 
 	} else {
-		pFont->Draw("HOW TO PLAY", SGD::Point{ 680, 650 }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
+		pFont->Draw("HOW TO PLAY", SGD::Point{ 680, 650 - SCREEN_OFFSET }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
 		m_bCursorHTPSe = false;
 	}
 
 	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 855) &&
-		(pInput->GetCursorPosition().y > 702 && pInput->GetCursorPosition().y < 722) || m_nCursor == 1) {
-		pFont->Draw("CREDITS", SGD::Point{ 680, 700 }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
+		(pInput->GetCursorPosition().y > 702 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 722 - SCREEN_OFFSET) || m_nCursor == 1) {
+		pFont->Draw("CREDITS", SGD::Point{ 680, 700 - SCREEN_OFFSET }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
 		if (!m_bCursorCreditSe) {
 			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
 			m_bCursorCreditSe = true;
 		}
 	} else {
-		pFont->Draw("CREDITS", SGD::Point{ 680, 700 }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
+		pFont->Draw("CREDITS", SGD::Point{ 680, 700 - SCREEN_OFFSET }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
 		m_bCursorCreditSe = false;
 	}
 
 	if ((pInput->GetCursorPosition().x > 680 && pInput->GetCursorPosition().x < 775) &&
-		(pInput->GetCursorPosition().y > 752 && pInput->GetCursorPosition().y < 772) || m_nCursor == 2) {
-		pFont->Draw("EXIT", SGD::Point{ 680, 750 }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
+		(pInput->GetCursorPosition().y > 752 - SCREEN_OFFSET && pInput->GetCursorPosition().y < 772 - SCREEN_OFFSET) || m_nCursor == 2) {
+		pFont->Draw("EXIT", SGD::Point{ 680, 750 - SCREEN_OFFSET }, 0.8f, SGD::Color{ 255, 128, 128, 255 });
 		if (!m_bCursorExitSe) {
 			SGD::AudioManager::GetInstance()->PlayAudio(m_hIntroMenuSe);
 			m_bCursorExitSe = true;
 		}
 	} else {
-		pFont->Draw("EXIT", SGD::Point{ 680, 750 }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
+		pFont->Draw("EXIT", SGD::Point{ 680, 750 - SCREEN_OFFSET }, 0.8f, SGD::Color{ 180, 128, 128, 255 });
 		m_bCursorExitSe = false;
 	}
 
