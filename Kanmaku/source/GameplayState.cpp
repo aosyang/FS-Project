@@ -82,7 +82,7 @@ enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER };
 
 
 	// Setting World Size
-	m_szWorldSize = SGD::Size{ 2048, 1024 };
+	m_szWorldSize = SGD::Size{ 2048, 768 };
 
 	
 }
@@ -168,7 +168,7 @@ Entity* GameplayState::CreatePlayer() const {
 
 	//World Cam Update
 	//m_ptWorldCamPosition = m_pTank->GetPosition() - m_szScreenSize / 2;
-	m_ptWorldCamPosition = m_pPlayer->GetPosition() + SGD::Size(0,-256) - Game::GetInstance()->GetScreenSize() / 2;
+	m_ptWorldCamPosition = m_pPlayer->GetPosition() + SGD::Size(0,0) - Game::GetInstance()->GetScreenSize() / 2;
 
 
 	

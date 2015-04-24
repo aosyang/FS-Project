@@ -25,17 +25,31 @@ Player::~Player(void) {
 
 void Player::Update(float elapsedTime) {
 
-
 	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A)) {
+
 		m_fSpeed += m_fAccelerationRate * elapsedTime;
 	}
 
 	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::D)) {
 		m_fSpeed -= m_fAccelerationRate * elapsedTime;
+
 	}
 
-	SGD::Vector vtNewVelocity{ -m_fSpeed,0 };
-	m_vtVelocity = vtNewVelocity;
+	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::Space) || SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::W)) {
+		m_vtVelocity.y = -200.0f;
+	}
+
+	SGD::Vector vtNewVelocity{ -m_fSpeed, 0 };
+
+	m_vtVelocity.x = vtNewVelocity.x;
+	m_vtVelocity += m_vtGravity;
+
+
+	if (m_ptPosition.y - m_szSize.height / 2 < 0) {
+		//m_ptPosition.y = m_szSize.height / 2;
+		m_vtVelocity.y = 0;
+
+	}
 
 	Entity::Update(elapsedTime);
 	StayInWorld();

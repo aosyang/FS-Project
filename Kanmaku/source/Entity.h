@@ -57,6 +57,8 @@ public:
 	SGD::Vector		GetVelocity	( void ) const			{	return m_vtVelocity;	}
 	SGD::Size		GetSize		( void ) const			{	return m_szSize;		}
 	float			GetRotation	( void ) const			{	return m_fRotation;		}
+	SGD::Vector		GetGravity(void) const { return m_vtGravity; }
+
 	
 	// Mutators:
 	void			SetImage	( SGD::HTexture	img  )	{	m_hImage		= img;	}
@@ -72,6 +74,7 @@ protected:
 	SGD::Point		m_ptPosition	= SGD::Point{ 0, 0 };	// 2D position
 	SGD::Vector		m_vtVelocity	= SGD::Vector{ 0, 0 };	// 2D velocity
 	SGD::Size		m_szSize		= SGD::Size{ 0, 0 };	// 2D size
+	SGD::Vector		m_vtGravity		= SGD::Vector{ 0, 4.9f }; // 2D Gravity
 	float			m_fRotation		= 0.0f;
 
 private:
