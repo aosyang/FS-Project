@@ -59,6 +59,8 @@ class Player : public Entity, public SGD::IListener {
 		float m_fAccelerationRate;
 		float m_fSpeed;
 		float m_fMaxSpeed;
+		float m_fGroundOffset;
+		float m_fWallOffset;
 
 		// handles
 		SGD::HAudio	m_hShotSfx = SGD::INVALID_HANDLE;

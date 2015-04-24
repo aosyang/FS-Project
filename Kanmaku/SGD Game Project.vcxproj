@@ -96,6 +96,7 @@
     <ClCompile Include="source\CreditsState.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\EntityManager.cpp" />
+    <ClCompile Include="source\FixedObject.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameplayState.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="source\CreditsState.h" />
     <ClInclude Include="source\Entity.h" />
     <ClInclude Include="source\EntityManager.h" />
+    <ClInclude Include="source\FixedObject.h" />
     <ClInclude Include="source\Game.h" />
     <ClInclude Include="source\GameplayState.h" />
     <ClInclude Include="source\IEntity.h" />

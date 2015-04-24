@@ -96,6 +96,9 @@
     <ClCompile Include="source\Player.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="source\FixedObject.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\SGD_Declarations.h">
@@ -189,6 +192,9 @@
       <Filter>Game States</Filter>
     </ClInclude>
     <ClInclude Include="source\Player.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\FixedObject.h">
       <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>

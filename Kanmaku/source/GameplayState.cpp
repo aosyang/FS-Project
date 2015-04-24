@@ -168,7 +168,14 @@ Entity* GameplayState::CreatePlayer() const {
 
 	//World Cam Update
 	//m_ptWorldCamPosition = m_pTank->GetPosition() - m_szScreenSize / 2;
-	m_ptWorldCamPosition = m_pPlayer->GetPosition() + SGD::Size(0,0) - Game::GetInstance()->GetScreenSize() / 2;
+	SGD::Point CamOffset = m_pPlayer->GetPosition() - Game::GetInstance()->GetScreenSize() / 2;
+
+	if (CamOffset.y > 0) CamOffset.y = 0;
+	else if (CamOffset.y < Game::GetInstance()->GetScreenSize().height) CamOffset.y = Game::GetInstance()->GetScreenSize().height;
+	if (CamOffset.x < 0) CamOffset.x = 0;
+	else if (CamOffset.x > Game::GetInstance()->GetScreenSize().width) CamOffset.x = Game::GetInstance()->GetScreenSize().width;
+
+	m_ptWorldCamPosition = CamOffset;
 
 
 	

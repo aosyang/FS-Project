@@ -18,7 +18,12 @@
 #endif
 
 
-Player::Player(void) : m_fSpeed(0.0f), m_fAccelerationRate(512.0f), m_fMaxSpeed(200.0f) {
+Player::Player(void) : 
+	m_fSpeed(0.0f),
+	m_fAccelerationRate(768.0f),
+	m_fMaxSpeed(200.0f),
+	m_fGroundOffset(99.0f),
+	m_fWallOffset(192.0f) {
 
 }
 
@@ -44,11 +49,15 @@ void Player::Update(float elapsedTime) {
 	}
 
 	if (!(SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::D) && SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A))) {
-		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height) {
-			if (m_fSpeed > 0 && m_fSpeed != 0) {
-				m_fSpeed -= (m_fAccelerationRate * 1.5f) * elapsedTime;
-			} else if (m_fSpeed < 0 && m_fSpeed != 0) {
-				m_fSpeed += (m_fAccelerationRate * 1.5f) * elapsedTime;
+		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
+			if (m_fSpeed > 0) {
+				if (m_fSpeed - (m_fAccelerationRate * 0.5f) * elapsedTime < 0) {
+					m_fSpeed = 0;
+				} else {
+					m_fSpeed -= (m_fAccelerationRate * 0.5f) * elapsedTime;
+				}
+			} else if (m_fSpeed < 0) {
+				m_fSpeed += (m_fAccelerationRate * 0.5f) * elapsedTime;
 			}
 		}
 	}
@@ -58,8 +67,8 @@ void Player::Update(float elapsedTime) {
 #if _DEBUG
 		std::cout << m_ptPosition.y + m_szSize.height / 2 << '\n';
 #endif
-		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height) {
-			m_vtVelocity.y = -768.0f;
+		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
+			m_vtVelocity.y = -512.0f;
 		}
 	}
 
@@ -68,12 +77,6 @@ void Player::Update(float elapsedTime) {
 	m_vtVelocity.x = vtNewVelocity.x;
 	m_vtVelocity += m_vtGravity;
 
-
-	if (m_ptPosition.y - m_szSize.height / 2 < 0) {
-		m_ptPosition.y = m_szSize.height / 2;
-		m_vtVelocity.y = 0;
-
-	}
 
 	Entity::Update(elapsedTime);
 	StayInWorld();
@@ -110,8 +113,8 @@ SGD::Rectangle Player::GetRect(void) const {
 }
 
 void Player::StayInWorld() {
-	if (m_ptPosition.x - m_szSize.width / 2 < 0) {
-		m_ptPosition.x = m_szSize.width / 2;
+	if (m_ptPosition.x - m_szSize.width / 2 < m_fWallOffset) {
+		m_ptPosition.x = m_szSize.width / 2 + m_fWallOffset;
 		m_fSpeed = 0;
 	}
 
@@ -124,8 +127,8 @@ void Player::StayInWorld() {
 		m_fSpeed = 0;
 	}
 
-	if (m_ptPosition.y + m_szSize.height / 2 > GameplayState::GetInstance()->GetWorldSize().height) {
-		m_ptPosition.y = GameplayState::GetInstance()->GetWorldSize().height - m_szSize.height / 2;
+	if (m_ptPosition.y + m_szSize.height / 2 > GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
+		m_ptPosition.y = GameplayState::GetInstance()->GetWorldSize().height - m_szSize.height / 2 - m_fGroundOffset;
 	}
 
 	if (m_ptPosition.x == m_szSize.width / 2 || m_ptPosition.y == m_szSize.height / 2 ||
