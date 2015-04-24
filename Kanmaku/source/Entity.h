@@ -74,7 +74,7 @@ protected:
 	SGD::Point		m_ptPosition	= SGD::Point{ 0, 0 };	// 2D position
 	SGD::Vector		m_vtVelocity	= SGD::Vector{ 0, 0 };	// 2D velocity
 	SGD::Size		m_szSize		= SGD::Size{ 0, 0 };	// 2D size
-	SGD::Vector		m_vtGravity		= SGD::Vector{ 0, 4.9f }; // 2D Gravity
+	SGD::Vector		m_vtGravity		= SGD::Vector{ 0, 1.0f }; // 2D Gravity
 	float			m_fRotation		= 0.0f;
 
 private:

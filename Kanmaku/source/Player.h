@@ -41,9 +41,11 @@ class Player : public Entity, public SGD::IListener {
 		//Accessors
 		float GetSpeed()const { return m_fSpeed; }
 		float GetAccelerationRate()const { return m_fAccelerationRate; }
+		float GetMaxSpeed() const { return m_fMaxSpeed; }
 
 		//Mutators
 		void SetSpeed(float _fSpeed) { m_fSpeed = _fSpeed; }
+		void SetMaxSpeed(float _fMaxSpeed) { m_fMaxSpeed = _fMaxSpeed; }
 		void SetAccelerationRate(float _fAccelerationRate) { m_fAccelerationRate = _fAccelerationRate; }
 
 	private:
@@ -56,6 +58,7 @@ class Player : public Entity, public SGD::IListener {
 		// properties
 		float m_fAccelerationRate;
 		float m_fSpeed;
+		float m_fMaxSpeed;
 
 		// handles
 		SGD::HAudio	m_hShotSfx = SGD::INVALID_HANDLE;

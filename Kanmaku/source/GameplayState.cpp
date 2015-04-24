@@ -181,7 +181,7 @@ Entity* GameplayState::CreatePlayer() const {
 	SGD::MessageManager::GetInstance()->Update();
 
 
-#if _DEBUG
+#if 0
 	system("cls");
 	std::cout << "X: " << pInput->GetCursorPosition().x << " Y: " << pInput->GetCursorPosition().y << std::endl;
 

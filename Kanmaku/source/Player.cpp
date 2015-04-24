@@ -13,8 +13,12 @@
 #include "../SGD Wrappers/SGD_Utilities.h"
 #include "../SGD Wrappers/SGD_GraphicsManager.h"
 
+#if _DEBUG
+#include <iostream>
+#endif
 
-Player::Player(void) : m_fSpeed(0.0f), m_fAccelerationRate(1000.0f) {
+
+Player::Player(void) : m_fSpeed(0.0f), m_fAccelerationRate(512.0f), m_fMaxSpeed(200.0f) {
 
 }
 
@@ -26,17 +30,37 @@ Player::~Player(void) {
 void Player::Update(float elapsedTime) {
 
 	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A)) {
+		if (m_fSpeed < m_fMaxSpeed) {
+			m_fSpeed += m_fAccelerationRate * elapsedTime;
+		}
 
-		m_fSpeed += m_fAccelerationRate * elapsedTime;
 	}
 
 	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::D)) {
-		m_fSpeed -= m_fAccelerationRate * elapsedTime;
+		if (m_fSpeed > -m_fMaxSpeed) {
+			m_fSpeed -= m_fAccelerationRate * elapsedTime;
+		}
 
 	}
 
-	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::Space) || SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::W)) {
-		m_vtVelocity.y = -200.0f;
+	if (!(SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::D) && SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A))) {
+		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height) {
+			if (m_fSpeed > 0 && m_fSpeed != 0) {
+				m_fSpeed -= (m_fAccelerationRate * 1.5f) * elapsedTime;
+			} else if (m_fSpeed < 0 && m_fSpeed != 0) {
+				m_fSpeed += (m_fAccelerationRate * 1.5f) * elapsedTime;
+			}
+		}
+	}
+
+
+	if (SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::Space) || SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::W)) {
+#if _DEBUG
+		std::cout << m_ptPosition.y + m_szSize.height / 2 << '\n';
+#endif
+		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height) {
+			m_vtVelocity.y = -768.0f;
+		}
 	}
 
 	SGD::Vector vtNewVelocity{ -m_fSpeed, 0 };
@@ -46,7 +70,7 @@ void Player::Update(float elapsedTime) {
 
 
 	if (m_ptPosition.y - m_szSize.height / 2 < 0) {
-		//m_ptPosition.y = m_szSize.height / 2;
+		m_ptPosition.y = m_szSize.height / 2;
 		m_vtVelocity.y = 0;
 
 	}
@@ -88,6 +112,7 @@ SGD::Rectangle Player::GetRect(void) const {
 void Player::StayInWorld() {
 	if (m_ptPosition.x - m_szSize.width / 2 < 0) {
 		m_ptPosition.x = m_szSize.width / 2;
+		m_fSpeed = 0;
 	}
 
 	if (m_ptPosition.y - m_szSize.height / 2 < 0) {
@@ -96,6 +121,7 @@ void Player::StayInWorld() {
 
 	if (m_ptPosition.x + m_szSize.width / 2 > GameplayState::GetInstance()->GetWorldSize().width) {
 		m_ptPosition.x = GameplayState::GetInstance()->GetWorldSize().width - m_szSize.width / 2;
+		m_fSpeed = 0;
 	}
 
 	if (m_ptPosition.y + m_szSize.height / 2 > GameplayState::GetInstance()->GetWorldSize().height) {
@@ -106,7 +132,7 @@ void Player::StayInWorld() {
 		m_ptPosition.x == GameplayState::GetInstance()->GetWorldSize().width - m_szSize.width / 2 ||
 		m_ptPosition.y == GameplayState::GetInstance()->GetWorldSize().height - m_szSize.height / 2) {
 
-		m_fSpeed = 0;
+		//m_fSpeed = 0;
 
 	}
 
