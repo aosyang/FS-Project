@@ -9,7 +9,9 @@
 
 #include "../SGD Wrappers/SGD_Utilities.h"
 #include "IEntity.h"
+#include <algorithm>
 
+bool zsortfunc(IEntity * a, IEntity * b) { return a->GetDepth() > b->GetDepth(); }
 
 //*********************************************************************//
 // AddEntity
@@ -195,7 +197,7 @@ void EntityManager::UpdateAll( float elapsedTime )
 // RenderAll
 //	- render each entity in the table
 
-#if 1
+#if 0
 void EntityManager::RenderAll( void )
 {
 	// Validate the iteration state
@@ -216,7 +218,7 @@ void EntityManager::RenderAll( void )
 	// Unlock the iterator
 	m_bIterating = false;
 }
-#else 0
+#else 1 // Z-Sorting
 //	- render each entity in the table
 void EntityManager::RenderAll() {
 	// Validate the iteration state
@@ -238,7 +240,7 @@ void EntityManager::RenderAll() {
 	// Unlock the iterator
 	m_bIterating = false;
 
-	std::qsort(&priorityQueue[0], priorityQueue.size(), sizeof(IEntity*), zsortfunc);
+	std::sort(priorityQueue.begin(), priorityQueue.end(), zsortfunc);
 
 	for (priorityIter = priorityQueue.begin(); priorityIter != priorityQueue.end(); priorityIter++) {
 		(*priorityIter)->Render();

@@ -103,6 +103,7 @@
     <ClCompile Include="source\MainMenuState.cpp" />
     <ClCompile Include="source\OptionMenuState.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Puff.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\SGD_AudioManager.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="source\MessageID.h" />
     <ClInclude Include="source\OptionMenuState.h" />
     <ClInclude Include="source\Player.h" />
+    <ClInclude Include="source\Puff.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

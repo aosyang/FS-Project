@@ -66,19 +66,21 @@ private:
 	// Game Assets:
 	SGD::HTexture	m_hBackgroundImg = SGD::INVALID_HANDLE;
 	SGD::HTexture	m_hPlayerImg = SGD::INVALID_HANDLE;
+	SGD::HTexture	m_hPuffImg = SGD::INVALID_HANDLE;
 	
 	
 	//*****************************************************************//
 	// Game Entities
 	EntityManager*	m_pEntities			= nullptr;
 	Entity*			m_pPlayer = nullptr;
+	Entity*			m_pPuff = nullptr;
 
 	
 	//*******************************************************************
 	// Factory Methods
 
 	Entity* CreatePlayer() const;
-	//Entity* CreateEnemy() const;
+	Entity* CreatePuff() const;
 
 	//*****************************************************************//
 	// Message Callback Procedure

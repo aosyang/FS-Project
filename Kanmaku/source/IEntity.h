@@ -37,6 +37,14 @@ public:
 	virtual void	AddRef			( void )					= 0;
 	virtual void	Release			( void )					= 0;
 
+	// Z-Sorting interface
+	float GetDepth() const { return m_fDepth; }
+	void SetDepth(float _fDepth) { m_fDepth = _fDepth; }
+
+private:
+	float			m_fDepth = 0.0f;	// Z-Sorting
+
+
 protected:
 	//*****************************************************************//
 	// Destructor MUST be virtual

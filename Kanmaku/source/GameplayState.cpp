@@ -27,7 +27,7 @@
 #include "Entity.h"
 
 #include "Player.h"
-
+#include "Puff.h"
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <cstdlib>
@@ -39,7 +39,7 @@
 
 //***********************************************************************
 // Entity Manager Buckets
-enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER };
+enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER, BUCKET_PUFF };
 
 
 //*********************************************************************//
@@ -68,6 +68,7 @@ enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER };
 #if _DEBUG
 	m_hBackgroundImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG.png");
 	m_hPlayerImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_PlayerEntity.png");
+	m_hPuffImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_Puff.png");
 
 #else
 
@@ -79,6 +80,9 @@ enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER };
 	// Initialize the player's entity
 	m_pPlayer = CreatePlayer();
 	m_pEntities->AddEntity(m_pPlayer, BUCKET_PLAYER);
+
+	m_pPuff = CreatePuff();
+	m_pEntities->AddEntity(m_pPuff, BUCKET_PUFF);
 
 
 	// Setting World Size
@@ -92,8 +96,17 @@ Entity* GameplayState::CreatePlayer() const {
 	pPlayer->SetImage(m_hPlayerImg);
 	pPlayer->SetSize(SGD::Size(64, 64));
 	pPlayer->SetPosition(SGD::Point(200, 660));
+	pPlayer->SetDepth(10.0f);
 	return pPlayer;
+}
 
+Entity* GameplayState::CreatePuff() const {
+	Puff* pPuff = new Puff;
+	pPuff->SetImage(m_hPuffImg);
+	pPuff->SetSize(SGD::Size(32, 32));
+	pPuff->SetPosition(m_pPlayer->GetPosition());
+	pPuff->SetDepth(11.0f);
+	return pPuff;
 }
 
 
@@ -109,12 +122,18 @@ Entity* GameplayState::CreatePlayer() const {
 		m_pPlayer = nullptr;
 	}
 
+	if (m_pPuff != nullptr) {
+		m_pPuff->Release();
+		m_pPuff = nullptr;
+	}	
+
 	// Unload the resources
 	SGD::GraphicsManager*	pGraphics = SGD::GraphicsManager::GetInstance();
 	SGD::AudioManager*		pAudio = SGD::AudioManager::GetInstance();
 
 	pGraphics->UnloadTexture(m_hBackgroundImg);
 	pGraphics->UnloadTexture(m_hPlayerImg);
+	pGraphics->UnloadTexture(m_hPuffImg);
 
 
 	//pAudio->UnloadAudio(m_hBackgroundMus);

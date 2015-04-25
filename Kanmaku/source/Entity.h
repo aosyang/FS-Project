@@ -30,7 +30,7 @@ protected:	virtual ~Entity( void )	= default;		// protected to force reference c
 public:
 	//*****************************************************************//
 	// Entity Types:
-	enum EntityType { ENT_BASE, ENT_PLAYER, ENT_BULLET_TYPE_A,  };
+	enum EntityType { ENT_BASE, ENT_PLAYER, ENT_PUFF, ENT_BULLET_TYPE_A,  };
 
 
 	//*****************************************************************//
@@ -58,6 +58,7 @@ public:
 	SGD::Size		GetSize		( void ) const			{	return m_szSize;		}
 	float			GetRotation	( void ) const			{	return m_fRotation;		}
 	SGD::Vector		GetGravity(void) const { return m_vtGravity; }
+	
 
 	
 	// Mutators:
@@ -73,8 +74,8 @@ protected:
 	SGD::HTexture	m_hImage		= SGD::INVALID_HANDLE;	// image handle
 	SGD::Point		m_ptPosition	= SGD::Point{ 0, 0 };	// 2D position
 	SGD::Vector		m_vtVelocity	= SGD::Vector{ 0, 0 };	// 2D velocity
-	SGD::Size		m_szSize		= SGD::Size{ 0, 0 };	// 2D size
 	SGD::Vector		m_vtGravity		= SGD::Vector{ 0, 1.0f }; // 2D Gravity
+	SGD::Size		m_szSize		= SGD::Size{ 0, 0 };	// 2D size
 	float			m_fRotation		= 0.0f;
 
 private:

@@ -59,3 +59,5 @@ private:
 	bool			m_bIterating = false;	// read/write lock
 
 };
+
+
