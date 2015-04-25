@@ -6,12 +6,15 @@
 //***********************************************************************
 
 #include "Player.h"
+#include "Puff.h"
 #include "GameplayState.h"
 #include "../SGD Wrappers/SGD_InputManager.h"
 #include "../SGD Wrappers/SGD_AudioManager.h"
 #include "../SGD Wrappers/SGD_IListener.h"
 #include "../SGD Wrappers/SGD_Utilities.h"
 #include "../SGD Wrappers/SGD_GraphicsManager.h"
+
+#include "CreateBulletMessage.h"
 
 #if _DEBUG
 #include <iostream>
@@ -33,6 +36,27 @@ Player::~Player(void) {
 
 
 void Player::Update(float elapsedTime) {
+
+	Puff* ptPuff = dynamic_cast<Puff*>(GameplayState::GetInstance()->GetPuff());
+
+	if (SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::MouseLeft)) {
+		// Allocate a CreateLaserMessage
+
+		
+
+		CreateBulletMessage* pMsg = new CreateBulletMessage(
+
+			ptPuff->GetPosition().x + ptPuff->GetSize().width / 4,
+			ptPuff->GetPosition().y + ptPuff->GetSize().height / 4,
+			//m_ptPosition.x + m_szSize.width / 2,
+			//m_ptPosition.y + m_szSize.height / 2,
+
+			m_fRotation, BULLET_A);
+
+		// Queue the message into the Message System
+		pMsg->QueueMessage();
+		pMsg = nullptr;
+	}
 
 	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A)) {
 		if (m_fSpeed < m_fMaxSpeed) {
@@ -68,7 +92,7 @@ void Player::Update(float elapsedTime) {
 		std::cout << m_ptPosition.y + m_szSize.height / 2 << '\n';
 #endif
 		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
-			m_vtVelocity.y = -300.0f;
+			m_vtVelocity.y = -500.0f;
 		}
 	}
 

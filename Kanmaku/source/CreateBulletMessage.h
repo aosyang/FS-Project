@@ -1,8 +1,8 @@
 //***********************************************************************
-//	File:		CreateBulletTypeAMessage.h
+//	File:		CreateBulletMessage.h
 //	Author:		
 //	Course:		
-//	Purpose:	CreateBulletTypeAMessage class stores the data needed
+//	Purpose:	CreateBulletMessage class stores the data needed
 //				to create a new laser entity
 //				This message will be queued into the Message Manager
 //				and processed by the Game.
@@ -14,15 +14,19 @@
 
 
 //***********************************************************************
+// Message Bullet Type
+enum BulletType { BULLET_A, BULLET_B, BULLET_C };
+
+//***********************************************************************
 // CreateBulletTypeAMessage class
 //	- stores the position, rotation, and owner to create
 //	  a new laser entity and add it into the Entity Manager
-class CreateBulletTypeAMessage : public SGD::Message {
+class CreateBulletMessage : public SGD::Message {
 public:
 	//*******************************************************************
 	// Constructor MUST be given spawn data
-	CreateBulletTypeAMessage(float posX, float posY, float rotation, bool isPlayerBullet = true);
-	virtual ~CreateBulletTypeAMessage() = default;
+	CreateBulletMessage(float posX, float posY, float rotation, BulletType _bulletType);
+	virtual ~CreateBulletMessage() = default;
 
 
 	//*******************************************************************
@@ -30,13 +34,12 @@ public:
 	float		GetPosX(void) const { return m_fPosX; }
 	float		GetPosY(void) const { return m_fPosY; }
 	float		GetRotation(void) const { return m_fRotation; }
-	bool		IsPlayerBullet(void) const { return m_bIsPlayerBullet; }
-
+	BulletType	GetType() const { return m_enBulletType; }
 private:
 	//*******************************************************************
 	// members:
 	float		m_fPosX = 0.0f;		// position to center at
 	float		m_fPosY = 0.0f;
 	float		m_fRotation = 0.0f;		// rotation in radians
-	bool		m_bIsPlayerBullet = true;
+	BulletType	m_enBulletType;
 };

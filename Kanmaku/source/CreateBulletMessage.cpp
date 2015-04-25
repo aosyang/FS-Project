@@ -1,23 +1,23 @@
 //***********************************************************************
-//	File:		CreateBulletTypeAMessage.cpp
+//	File:		CreateBulletMessage.cpp
 //	Author:		
 //	Course:		
-//	Purpose:	CreateBulletTypeAMessage class stores the data needed
+//	Purpose:	CreateBulletMessage class stores the data needed
 //				to create a new laser entity
 //***********************************************************************
 
-#include "CreateBulletTypeAMessage.h"
+#include "CreateBulletMessage.h"
 #include "MessageID.h"
 
 
 //***********************************************************************
 // CONSTRUCTOR
 //	- store parameters
-CreateBulletTypeAMessage::CreateBulletTypeAMessage(float posX, float posY, float rotation, bool isPlayerBullet)
+CreateBulletMessage::CreateBulletMessage(float posX, float posY, float rotation, BulletType _bulletType)
 	: Message(MessageID::MSG_CREATE_BULLET) {
 	// Store the parameters
 	m_fPosX = posX;
 	m_fPosY = posY;
 	m_fRotation = rotation;
-	m_bIsPlayerBullet = isPlayerBullet;
+	m_enBulletType = _bulletType;
 }

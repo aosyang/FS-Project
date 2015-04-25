@@ -28,6 +28,7 @@ public:
 	virtual int		GetType(void)	const override { return ENT_PLAYER; }
 	virtual void	HandleCollision(const IEntity* pOther)	override;
 
+	float GetDepthLevel() { return m_fDepthLevel; }
 
 
 	//*******************************************************************
@@ -45,8 +46,8 @@ public:
 private:
 	//*******************************************************************
 	// members:
-	float m_fAngle = 0.0f;
 	float m_unPlusTime = 0;
+	float m_fDepthLevel;
 
 protected:
 

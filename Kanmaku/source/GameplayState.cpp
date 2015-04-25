@@ -29,6 +29,10 @@
 
 #include "Player.h"
 #include "Puff.h"
+#include "Bullet.h"
+
+#include "CreateBulletMessage.h"
+
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <cstdlib>
@@ -38,9 +42,7 @@
 #include <iostream>
 #endif
 
-//***********************************************************************
-// Entity Manager Buckets
-enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER, BUCKET_PUFF };
+
 
 
 //*********************************************************************//
@@ -70,6 +72,7 @@ enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER, BUCKET_PUFF };
 	m_hBackgroundImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG.png");
 	m_hPlayerImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_PlayerEntity.png");
 	m_hPuffImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_Puff.png");
+	m_hBulletTypeA = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/kc_BulletTypeA.png");
 
 #else
 
@@ -90,24 +93,6 @@ enum EntityBucket { BUCKET_FIXED_ENTITY = 0, BUCKET_PLAYER, BUCKET_PUFF };
 	m_szWorldSize = SGD::Size{ 2048, 768 };
 
 	
-}
-
-Entity* GameplayState::CreatePlayer() const {
-	Player* pPlayer = new Player;
-	pPlayer->SetImage(m_hPlayerImg);
-	pPlayer->SetSize(SGD::Size(64, 64));
-	pPlayer->SetPosition(SGD::Point(200, 660));
-	pPlayer->SetDepth(10.5f);
-	return pPlayer;
-}
-
-Entity* GameplayState::CreatePuff() const {
-	Puff* pPuff = new Puff;
-	pPuff->SetImage(m_hPuffImg);
-	pPuff->SetSize(SGD::Size(32, 32));
-	pPuff->SetPosition(m_pPlayer->GetPosition());
-	pPuff->SetDepth(10.6f);
-	return pPuff;
 }
 
 
@@ -135,6 +120,7 @@ Entity* GameplayState::CreatePuff() const {
 	pGraphics->UnloadTexture(m_hBackgroundImg);
 	pGraphics->UnloadTexture(m_hPlayerImg);
 	pGraphics->UnloadTexture(m_hPuffImg);
+	pGraphics->UnloadTexture(m_hBulletTypeA);
 
 
 	//pAudio->UnloadAudio(m_hBackgroundMus);
@@ -163,23 +149,6 @@ Entity* GameplayState::CreatePuff() const {
 // Update
 //	- handle input & update entities
 /*virtual*/ bool GameplayState::Update( float elapsedTime )	/*override*/ {
-
-	// Access the bitmap font
-	BitmapFont* pFont = Game::GetInstance()->GetFont();
-
-	// Align text based on window width
-	float width = Game::GetInstance()->GetScreenSize().width;
-	
-	int senka = dynamic_cast<Player*>(m_pPlayer)->GetSenka();
-	int lives = dynamic_cast<Player*>(m_pPlayer)->GetLive();
-	int hp = dynamic_cast<Player*>(m_pPlayer)->GetHealth();
-
-	std::string score = "Score:" + std::to_string(senka) + "\t" + "Lives:" + std::to_string(lives) + "\t" + "Health:" + std::to_string(hp);
-
-	pFont->Draw(score.c_str(),
-	{ (width - (score.length() * 32 * 0.8f)) / 2, 80 },
-		0.8f, { 255, 255, 255 }
-	);
 
 	SGD::InputManager* pInput = SGD::InputManager::GetInstance();
 	
@@ -245,6 +214,26 @@ Entity* GameplayState::CreatePuff() const {
 	// Render the entities
 	m_pEntities->RenderAll();
 
+	// Access the bitmap font
+	BitmapFont* pFont = Game::GetInstance()->GetFont();
+
+	// Align text based on window width
+	float width = Game::GetInstance()->GetScreenSize().width;
+
+	int senka = dynamic_cast<Player*>(m_pPlayer)->GetSenka();
+	int lives = dynamic_cast<Player*>(m_pPlayer)->GetLive();
+	int hp = dynamic_cast<Player*>(m_pPlayer)->GetHealth();
+
+	std::string score = "Lives:" + std::to_string(lives) + "   "
+						"Health:" + std::to_string(hp) + "   "
+						"Senka:" + std::to_string(senka);
+
+	pFont->Draw(
+		score.c_str(), 
+		SGD::Point{ (width - (score.length() * 32 * 1.0f)) / 2, 16 },
+		1.0f, SGD::Color{ 255, 255, 255 }
+	);
+
 	
 }
 
@@ -265,6 +254,55 @@ Entity* GameplayState::CreatePuff() const {
 	// What type of message?
 	switch( pMsg->GetMessageID() ) {
 	case MessageID::MSG_CREATE_BULLET: {
+		// Downcast to the actual message type
+		const CreateBulletMessage* pCreateMsg = dynamic_cast< const CreateBulletMessage* >(pMsg);
+
+		// Verify the cast succeeded
+		SGD_ASSERT(pCreateMsg != nullptr,
+			"GameplayState::MessageProc - MSG_CREATE_LASER is not actually a CreateLaserMessage");
+
+
+		// Access our own singleton
+		GameplayState* self = GameplayState::GetInstance();
+
+		Entity* pBullet = nullptr;
+		switch (pCreateMsg->GetType()) {
+			case BULLET_A: {
+				// Play sfx
+				//SGD::AudioManager::GetInstance()->PlayAudio(/*TO-DO*/);
+
+				// Create a new bullet entity using the message attributes
+				pBullet = self->CreateBullet(
+					pCreateMsg->GetPosX(),
+					pCreateMsg->GetPosY(),
+					pCreateMsg->GetRotation(),
+					BUCKET_BULLET_A/*is BucketType *NOT* BulletType*/
+				);
+				// Add the entity to the Entity Manager
+				self->m_pEntities->AddEntity(pBullet, BUCKET_BULLET_A);
+				break;
+			}
+			case BULLET_B: {
+				// Play sfx
+				//SGD::AudioManager::GetInstance()->PlayAudio(/*TO-DO*/);
+
+				break;
+			}
+			case BULLET_C: {
+				// Play sfx
+				//SGD::AudioManager::GetInstance()->PlayAudio(/*TO-DO*/);
+
+				break;
+			}
+			default: {
+				SGD_PRINT(L"GameplayState::MessageProc - pCreateMsg->GetType() - unknown bullet type.\n");
+				break;
+			}
+		}
+
+		// Release the local pointer
+		pBullet->Release();
+		pBullet = nullptr;
 		break;
 	}
 	case MessageID::MSG_DESTROY_ENTITY: {
@@ -282,4 +320,62 @@ Entity* GameplayState::CreatePuff() const {
 
 /* Restore previous warning levels */
 #pragma warning( pop )
+}
+
+// factory methods
+
+Entity* GameplayState::CreatePlayer() const {
+	Player* pPlayer = new Player;
+	pPlayer->SetImage(m_hPlayerImg);
+	pPlayer->SetSize(SGD::Size(64, 64));
+	pPlayer->SetPosition(SGD::Point(200, 660));
+	pPlayer->SetDepth(10.5f);
+	return pPlayer;
+}
+
+Entity* GameplayState::CreatePuff() const {
+	Puff* pPuff = new Puff;
+	pPuff->SetImage(m_hPuffImg);
+	pPuff->SetSize(SGD::Size(32, 32));
+	pPuff->SetPosition(m_pPlayer->GetPosition());
+	pPuff->SetDepth(10.6f);
+	return pPuff;
+}
+
+Entity* GameplayState::CreateBullet(float posX, float posY, float rotation, EntityBucket _bulletType) const {
+	Bullet* pBullet = new Bullet;
+
+	switch (_bulletType) {
+		
+		case BUCKET_BULLET_A: {
+			pBullet->SetImage(m_hBulletTypeA);
+			//pBullet->SetBulletHitSfx(/*TO-DO*/);
+			pBullet->SetPosition({ posX - 16 / 2, posY - 16 / 2 });	// centered on position
+			pBullet->SetSize({ 16, 16 });
+			// Create a vector for the velocity
+			SGD::Vector velocity = { 0, -1 };
+			velocity.Rotate(rotation);
+			velocity *= 400;
+
+			pBullet->SetVelocity(velocity);
+			pBullet->SetRotation(rotation);
+
+			pBullet->SetBulletType(Entity::ENT_BULLET_A);	// remeber to set the type!!!
+			break;
+		}	 				
+		case BUCKET_BULLET_B: {
+
+			break;
+		}	 				 
+		case BUCKET_BULLET_C: {
+
+			break;
+		}
+		default: {
+			SGD_PRINT(L"GameplayState::CreateBullet - unknown bullet type.\n");
+			break;
+		}
+	}
+
+	return pBullet;
 }

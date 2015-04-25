@@ -35,7 +35,8 @@ void Puff::Update(float elapsedTime) {
 
 	//std::cout << "sinf: " << sinf(m_unPlusTime) << ", conf: " << cosf(m_unPlusTime) << std::endl;
 
-	if (cosf(m_unPlusTime) > 0) {
+	m_fDepthLevel = cosf(m_unPlusTime);
+	if (m_fDepthLevel > 0) {
 		SetDepth(10.6f);
 	} else {
 		SetDepth(10.4f);

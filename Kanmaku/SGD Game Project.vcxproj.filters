@@ -105,10 +105,10 @@
     <ClCompile Include="source\Bullet.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="source\CreateBulletTypeAMessage.cpp">
+    <ClCompile Include="source\DestroyEntityMessage.cpp">
       <Filter>Messages</Filter>
     </ClCompile>
-    <ClCompile Include="source\DestroyEntityMessage.cpp">
+    <ClCompile Include="source\CreateBulletMessage.cpp">
       <Filter>Messages</Filter>
     </ClCompile>
   </ItemGroup>
@@ -215,10 +215,10 @@
     <ClInclude Include="source\Bullet.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="source\CreateBulletTypeAMessage.h">
+    <ClInclude Include="source\DestroyEntityMessage.h">
       <Filter>Messages</Filter>
     </ClInclude>
-    <ClInclude Include="source\DestroyEntityMessage.h">
+    <ClInclude Include="source\CreateBulletMessage.h">
       <Filter>Messages</Filter>
     </ClInclude>
   </ItemGroup>

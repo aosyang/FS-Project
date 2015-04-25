@@ -55,6 +55,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,7 +95,7 @@
     <ClCompile Include="source\BitmapFont.cpp" />
     <ClCompile Include="source\Bullet.cpp" />
     <ClCompile Include="source\CellAnimation.cpp" />
-    <ClCompile Include="source\CreateBulletTypeAMessage.cpp" />
+    <ClCompile Include="source\CreateBulletMessage.cpp" />
     <ClCompile Include="source\CreditsState.cpp" />
     <ClCompile Include="source\DestroyEntityMessage.cpp" />
     <ClCompile Include="source\Entity.cpp" />
@@ -130,7 +131,7 @@
     <ClInclude Include="source\BitmapFont.h" />
     <ClInclude Include="source\Bullet.h" />
     <ClInclude Include="source\CellAnimation.h" />
-    <ClInclude Include="source\CreateBulletTypeAMessage.h" />
+    <ClInclude Include="source\CreateBulletMessage.h" />
     <ClInclude Include="source\CreditsState.h" />
     <ClInclude Include="source\DestroyEntityMessage.h" />
     <ClInclude Include="source\Entity.h" />

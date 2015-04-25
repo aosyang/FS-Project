@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Entity.h"
+#
 //***********************************************************************
 // Bullet class
 //	- projectile entity
@@ -21,9 +22,10 @@ public:
 	//*******************************************************************
 	// Interface:	
 	virtual void	Update(float elapsedTime)		override;
-
-	virtual int		GetType(void)	const			override { return ENT_BULLET_BASE; }
+	virtual void	Render(void)					override;
+	virtual int		GetType(void)	const			override { return m_enType; }
 	virtual void	HandleCollision(const IEntity* pOther)	override;
+	virtual SGD::Rectangle GetRect(void) const override;
 
 
 	//*******************************************************************
@@ -31,9 +33,15 @@ public:
 	SGD::HAudio	GetBulletHitSfx(void) const { return m_hBulletHitSfx; }
 	void		SetBulletHitSfx(SGD::HAudio sfx) { m_hBulletHitSfx = sfx; }
 
+	void		SetBulletType(EntityType _type) { m_enType = _type; }
+
 private:
 	//*******************************************************************
 	// members:
 	SGD::HAudio		m_hBulletHitSfx = SGD::INVALID_HANDLE;
+
+	// Types
+	EntityType m_enType;
+
 
 };
