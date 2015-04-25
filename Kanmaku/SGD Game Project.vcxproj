@@ -92,8 +92,11 @@
     <ClCompile Include="SGD Wrappers\SGD_Utilities.cpp" />
     <ClCompile Include="source\AnchorPointAnimation.cpp" />
     <ClCompile Include="source\BitmapFont.cpp" />
+    <ClCompile Include="source\Bullet.cpp" />
     <ClCompile Include="source\CellAnimation.cpp" />
+    <ClCompile Include="source\CreateBulletTypeAMessage.cpp" />
     <ClCompile Include="source\CreditsState.cpp" />
+    <ClCompile Include="source\DestroyEntityMessage.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\EntityManager.cpp" />
     <ClCompile Include="source\FixedObject.cpp" />
@@ -125,8 +128,11 @@
     <ClInclude Include="SGD Wrappers\SGD_Utilities.h" />
     <ClInclude Include="source\AnchorPointAnimation.h" />
     <ClInclude Include="source\BitmapFont.h" />
+    <ClInclude Include="source\Bullet.h" />
     <ClInclude Include="source\CellAnimation.h" />
+    <ClInclude Include="source\CreateBulletTypeAMessage.h" />
     <ClInclude Include="source\CreditsState.h" />
+    <ClInclude Include="source\DestroyEntityMessage.h" />
     <ClInclude Include="source\Entity.h" />
     <ClInclude Include="source\EntityManager.h" />
     <ClInclude Include="source\FixedObject.h" />

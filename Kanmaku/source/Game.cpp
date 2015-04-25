@@ -127,7 +127,6 @@ int	Game::Update( void )
 			m_bFullScreen = true;
 		} else {
 			m_bFullScreen = false;
-
 		}
 	}
 

@@ -48,16 +48,16 @@ void Player::Update(float elapsedTime) {
 
 	}
 
-	if (!(SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::D) && SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A))) {
+	if (!(SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::D) || SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A))) {
 		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
 			if (m_fSpeed > 0) {
-				if (m_fSpeed - (m_fAccelerationRate * 0.5f) * elapsedTime < 0) {
+				if (m_fSpeed - (m_fAccelerationRate * 1.8f) * elapsedTime < 0) {
 					m_fSpeed = 0;
 				} else {
-					m_fSpeed -= (m_fAccelerationRate * 0.5f) * elapsedTime;
+					m_fSpeed -= (m_fAccelerationRate * 1.8f) * elapsedTime;
 				}
 			} else if (m_fSpeed < 0) {
-				m_fSpeed += (m_fAccelerationRate * 0.5f) * elapsedTime;
+				m_fSpeed += (m_fAccelerationRate * 1.8f) * elapsedTime;
 			}
 		}
 	}
@@ -68,14 +68,14 @@ void Player::Update(float elapsedTime) {
 		std::cout << m_ptPosition.y + m_szSize.height / 2 << '\n';
 #endif
 		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
-			m_vtVelocity.y = -512.0f;
+			m_vtVelocity.y = -300.0f;
 		}
 	}
 
 	SGD::Vector vtNewVelocity{ -m_fSpeed, 0 };
 
 	m_vtVelocity.x = vtNewVelocity.x;
-	m_vtVelocity += m_vtGravity;
+ 	m_vtVelocity += m_vtGravity;
 
 
 	Entity::Update(elapsedTime);

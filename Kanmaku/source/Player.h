@@ -18,6 +18,7 @@
 class Player : public Entity, public SGD::IListener {
 
 	public:
+
 		//*******************************************************************
 		// Default constructor and destructor
 		Player(void);
@@ -43,10 +44,19 @@ class Player : public Entity, public SGD::IListener {
 		float GetAccelerationRate()const { return m_fAccelerationRate; }
 		float GetMaxSpeed() const { return m_fMaxSpeed; }
 
+		int GetSenka() const { return m_nSenka; }
+		int GetLive() const { return m_nLives; }
+		int GetHealth() const { return m_nHealth; }
+
+
 		//Mutators
 		void SetSpeed(float _fSpeed) { m_fSpeed = _fSpeed; }
 		void SetMaxSpeed(float _fMaxSpeed) { m_fMaxSpeed = _fMaxSpeed; }
 		void SetAccelerationRate(float _fAccelerationRate) { m_fAccelerationRate = _fAccelerationRate; }
+
+		void SetSenka(int _senka) { m_nSenka = _senka; }
+		void SetLive(int _live) { m_nLives = _live; }
+		void SetHealth(int _health) { m_nHealth = _health; }
 
 	private:
 		//*******************************************************************

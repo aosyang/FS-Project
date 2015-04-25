@@ -11,7 +11,7 @@
 #include "IEntity.h"
 #include <algorithm>
 
-bool zsortfunc(IEntity * a, IEntity * b) { return a->GetDepth() > b->GetDepth(); }
+bool zsortfunc(IEntity * a, IEntity * b) { return a->GetDepth() < b->GetDepth(); }
 
 //*********************************************************************//
 // AddEntity

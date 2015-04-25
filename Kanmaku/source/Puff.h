@@ -7,14 +7,13 @@
 
 #pragma once
 
-#include "Player.h"
-
-
+#include "Entity.h"
+#include "../SGD Wrappers/SGD_IListener.h"
 
 //***********************************************************************
 // Puff class
 //	- projectile entity
-class Puff : public Player {
+class Puff : public Entity, public SGD::IListener {
 
 public:
 	//*******************************************************************
@@ -47,6 +46,7 @@ private:
 	//*******************************************************************
 	// members:
 	float m_fAngle = 0.0f;
+	float m_unPlusTime = 0;
 
 protected:
 

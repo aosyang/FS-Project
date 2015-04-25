@@ -9,6 +9,7 @@
 
 #include "Game.h"
 #include "MainMenuState.h"
+#include "BitmapFont.h"
 
 #include "../SGD Wrappers/SGD_AudioManager.h"
 #include "../SGD Wrappers/SGD_GraphicsManager.h"
@@ -96,7 +97,7 @@ Entity* GameplayState::CreatePlayer() const {
 	pPlayer->SetImage(m_hPlayerImg);
 	pPlayer->SetSize(SGD::Size(64, 64));
 	pPlayer->SetPosition(SGD::Point(200, 660));
-	pPlayer->SetDepth(10.0f);
+	pPlayer->SetDepth(10.5f);
 	return pPlayer;
 }
 
@@ -105,7 +106,7 @@ Entity* GameplayState::CreatePuff() const {
 	pPuff->SetImage(m_hPuffImg);
 	pPuff->SetSize(SGD::Size(32, 32));
 	pPuff->SetPosition(m_pPlayer->GetPosition());
-	pPuff->SetDepth(11.0f);
+	pPuff->SetDepth(10.6f);
 	return pPuff;
 }
 
@@ -161,8 +162,25 @@ Entity* GameplayState::CreatePuff() const {
 //*********************************************************************//
 // Update
 //	- handle input & update entities
-/*virtual*/ bool GameplayState::Update( float elapsedTime )	/*override*/
-{
+/*virtual*/ bool GameplayState::Update( float elapsedTime )	/*override*/ {
+
+	// Access the bitmap font
+	BitmapFont* pFont = Game::GetInstance()->GetFont();
+
+	// Align text based on window width
+	float width = Game::GetInstance()->GetScreenSize().width;
+	
+	int senka = dynamic_cast<Player*>(m_pPlayer)->GetSenka();
+	int lives = dynamic_cast<Player*>(m_pPlayer)->GetLive();
+	int hp = dynamic_cast<Player*>(m_pPlayer)->GetHealth();
+
+	std::string score = "Score:" + std::to_string(senka) + "\t" + "Lives:" + std::to_string(lives) + "\t" + "Health:" + std::to_string(hp);
+
+	pFont->Draw(score.c_str(),
+	{ (width - (score.length() * 32 * 0.8f)) / 2, 80 },
+		0.8f, { 255, 255, 255 }
+	);
+
 	SGD::InputManager* pInput = SGD::InputManager::GetInstance();
 	
 	// Press Escape to return to MainMenuState
@@ -245,16 +263,20 @@ Entity* GameplayState::CreatePuff() const {
 
 
 	// What type of message?
-	switch( pMsg->GetMessageID() )
-	{
-
-
-
-
-	default:
-	case MessageID::MSG_UNKNOWN:
-		SGD_PRINT( L"GameplayState::MessageProc - unknown message id\n" );
+	switch( pMsg->GetMessageID() ) {
+	case MessageID::MSG_CREATE_BULLET: {
 		break;
+	}
+	case MessageID::MSG_DESTROY_ENTITY: {
+		break;
+	}
+
+
+
+		default:
+		case MessageID::MSG_UNKNOWN:
+			SGD_PRINT( L"GameplayState::MessageProc - unknown message id\n" );
+			break;
 	}
 
 

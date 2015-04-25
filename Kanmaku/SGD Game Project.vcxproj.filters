@@ -102,6 +102,15 @@
     <ClCompile Include="source\Puff.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="source\Bullet.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CreateBulletTypeAMessage.cpp">
+      <Filter>Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DestroyEntityMessage.cpp">
+      <Filter>Messages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\SGD_Declarations.h">
@@ -202,6 +211,15 @@
     </ClInclude>
     <ClInclude Include="source\Puff.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Bullet.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CreateBulletTypeAMessage.h">
+      <Filter>Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DestroyEntityMessage.h">
+      <Filter>Messages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

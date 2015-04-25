@@ -17,7 +17,6 @@
 #include <iostream>
 #endif
 
-
 Puff::Puff(void) {
 
 }
@@ -28,7 +27,20 @@ Puff::~Puff(void) {
 
 
 void Puff::Update(float elapsedTime) {
-	m_ptPosition = SGD::Point(Player::GetPosition().x + sinf(SGD::PI * elapsedTime), Player::GetPosition().y + cosf(SGD::PI * elapsedTime) * 0.3f);
+	m_unPlusTime += elapsedTime * 2;
+	SGD::Point newPosition;
+
+	newPosition.x = GameplayState::GetInstance()->GetPlayer()->GetPosition().x + sinf(m_unPlusTime) * 50;
+	newPosition.y = GameplayState::GetInstance()->GetPlayer()->GetPosition().y - 10.0f + cosf(m_unPlusTime) * 50 * 0.3f;
+
+	//std::cout << "sinf: " << sinf(m_unPlusTime) << ", conf: " << cosf(m_unPlusTime) << std::endl;
+
+	if (cosf(m_unPlusTime) > 0) {
+		SetDepth(10.6f);
+	} else {
+		SetDepth(10.4f);
+	}
+	m_ptPosition = newPosition;
 
 }
 

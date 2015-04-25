@@ -48,6 +48,9 @@ public:
 	SGD::Size GetWorldSize() { return m_szWorldSize; }
 	SGD::Point GetWorldCamPosition() { return m_ptWorldCamPosition; }
 
+	// Entity
+	Entity* GetPlayer() { return m_pPlayer; }
+
 private:
 	//*****************************************************************//
 	// SINGLETON (not-dynamically allocated)
