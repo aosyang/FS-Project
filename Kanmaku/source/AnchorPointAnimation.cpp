@@ -53,12 +53,13 @@ void AnchorPointAnimation::Initialize( void )
 void AnchorPointAnimation::InitialPlayer() {
 	m_hImage = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/Cus_NorthernPrincess.png");
 
-	m_vFrames.resize(4);		// 4 frames: 0->3
+	m_vFrames.resize(5);		// 4 frames: 0->3
 
-	m_vFrames[0] = { {   0, 0,  64, 64 },	{ 32,32 }, 0.1f };	// source, position, duration
+	m_vFrames[0] = { {   0, 0,  64, 64 },	{ 32,32 }, 0.05f };	// source, position, duration
 	m_vFrames[1] = { {  64, 0, 128, 64 },	{ 32,32 }, 0.1f };
 	m_vFrames[2] = { { 128, 0, 192, 64 },	{ 32,32 }, 0.1f };
-	m_vFrames[3] = { { 192, 0, 256, 64 },	{ 32,32 }, 0.1f };
+	m_vFrames[3] = { { 192, 0, 256, 64 }, { 32, 32 }, 0.1f };
+	m_vFrames[4] = { { 0, 64, 64, 128 }, { 32, 32 }, 0.05f };
 
 	m_nCurrFrame = 0;
 
@@ -84,8 +85,8 @@ void AnchorPointAnimation::Terminate( void )
 //	- run the animation timer
 void AnchorPointAnimation::Update( float elapsedTime, bool isFlipped)
 {
-	std::vector< Frame > _vFrames = m_vFrames;
 
+	std::vector< Frame > _vFrames = m_vFrames;
 	if (isFlipped) {
 		std::reverse(_vFrames.begin(), _vFrames.end());
 	}
@@ -134,8 +135,7 @@ void AnchorPointAnimation::Render( SGD::Point position, bool flipped, float scal
 		"AnchorPointAnimation::Render - animation was not initialized" );
 	
 	// Check the parameters
-	if( scale <= 0.0f
-		|| color.alpha == 0 )
+	if( scale <= 0.0f || color.alpha == 0 )
 		return;
 
 
@@ -148,10 +148,15 @@ void AnchorPointAnimation::Render( SGD::Point position, bool flipped, float scal
 	if( flipped == true )
 		scaleX = -scaleX;
 
+	std::vector< Frame > _vFrames = m_vFrames;
+	if (flipped) {
+		std::reverse(_vFrames.begin(), _vFrames.end());
+	}
+
 
 	// Retrieve the source rect for the current frame
-	SGD::Rectangle frame = m_vFrames[ m_nCurrFrame ].rFrame;
-	SGD::Point anchor = m_vFrames[ m_nCurrFrame ].ptAnchor;
+	SGD::Rectangle frame = _vFrames[m_nCurrFrame].rFrame;
+	SGD::Point anchor = _vFrames[m_nCurrFrame].ptAnchor;
 
 
 	// Draw the current frame, offset from the position by
@@ -172,9 +177,15 @@ void AnchorPointAnimation::Render( SGD::Point position, bool flipped, float scal
 SGD::Rectangle	AnchorPointAnimation::GetRect( SGD::Point position, bool flipped,
 						float scale ) const
 {
+
+	std::vector< Frame > _vFrames = m_vFrames;
+
+	if (flipped) {
+		std::reverse(_vFrames.begin(), _vFrames.end());
+	}
 	// Retrieve the source rect for the current frame
-	SGD::Rectangle	frame	= m_vFrames[ m_nCurrFrame ].rFrame;
-	SGD::Point		anchor	= m_vFrames[ m_nCurrFrame ].ptAnchor;
+	SGD::Rectangle	frame = _vFrames[m_nCurrFrame].rFrame;
+	SGD::Point		anchor = _vFrames[m_nCurrFrame].ptAnchor;
 
 	// Is it flipped?
 	if( flipped == true )

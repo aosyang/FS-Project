@@ -96,50 +96,40 @@ void Player::Update(float elapsedTime) {
 	//////////////////////////////////////////////////////////////
 
 	if (ptInput->IsKeyDown(SGD::Key::A)) {
-		
+		m_bIsFlipped = true;
+
 		if (m_fSpeed < m_fMaxSpeed) {
 			m_fSpeed += m_fAccelerationRate * elapsedTime;
 		}
-		m_bIsFlipped = true;
-		m_pCharaterAnim->Pause(false);
-	} else {
-		m_pCharaterAnim->Pause(true);
-
-	}
+		
+	} 
 
 	if (ptInput->IsKeyDown(SGD::Key::D)) {
+		m_bIsFlipped = false;
 
 		if (m_fSpeed > -m_fMaxSpeed) {
 			m_fSpeed -= m_fAccelerationRate * elapsedTime;
 		}
-		m_bIsFlipped = false;
-		m_pCharaterAnim->Pause(false);
-	} else {
-		m_pCharaterAnim->Pause(true);
-
-	}
+		
+	} 
 	//	left and right control
 	if (!(ptInput->IsKeyDown(SGD::Key::D) || ptInput->IsKeyDown(SGD::Key::A))) {
-		m_pCharaterAnim->Restart(true, 1.0f);
 
 		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
 			if (m_fSpeed > 0) {
-				if (m_fSpeed - (m_fAccelerationRate * 1.8f) * elapsedTime < 0) {
+				if (m_fSpeed - (m_fAccelerationRate * 2.0f) * elapsedTime < 0) {
 					m_fSpeed = 0;
 				} else {
-					m_fSpeed -= (m_fAccelerationRate * 1.8f) * elapsedTime;
+					m_fSpeed -= (m_fAccelerationRate * 2.0f) * elapsedTime;
 				}
 			} else if (m_fSpeed < 0) {
-				m_fSpeed += (m_fAccelerationRate * 1.8f) * elapsedTime;
+				m_fSpeed += (m_fAccelerationRate * 2.0f) * elapsedTime;
 			}
 		}
 	}
 
 
 	if (m_bPendingJump) {	//pre-Jump trigger "space and w"
-#if _DEBUG
-		std::cout << m_ptPosition.y + m_szSize.height / 2 << '\n';
-#endif
 		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
 			m_vtVelocity.y = -1500.0f;
 		}
@@ -152,17 +142,19 @@ void Player::Update(float elapsedTime) {
 	m_vtVelocity.x = vtNewVelocity.x;
  	m_vtVelocity += m_vtGravity;
 
-
-
-	if (m_pCharaterAnim != nullptr) {
-
-		m_pCharaterAnim->Update(elapsedTime, m_bIsFlipped);
-
-
-		Entity::Update(elapsedTime);
+	if (m_fSpeed > 0) {
+		m_pCharaterAnim->Pause(false);
+	} else if (m_fSpeed < 0) {
+		m_pCharaterAnim->Pause(false);
+	} else {
+		m_pCharaterAnim->Pause(true);
+		m_pCharaterAnim->Restart(true, 1.0f);
 	}
 
-
+	if (m_pCharaterAnim != nullptr) {
+		m_pCharaterAnim->Update(elapsedTime, m_bIsFlipped);
+		Entity::Update(elapsedTime);
+	}
 	StayInWorld();
 }
 
