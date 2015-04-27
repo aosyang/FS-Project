@@ -74,7 +74,7 @@ protected:
 	SGD::HTexture	m_hImage		= SGD::INVALID_HANDLE;	// image handle
 	SGD::Point		m_ptPosition	= SGD::Point{ 0, 0 };	// 2D position
 	SGD::Vector		m_vtVelocity	= SGD::Vector{ 0, 0 };	// 2D velocity
-	SGD::Vector		m_vtGravity		= SGD::Vector{ 0, 2.0f }; // 2D Gravity
+	SGD::Vector		m_vtGravity		= SGD::Vector{ 0, 100.0f }; // 2D Gravity
 	SGD::Size		m_szSize		= SGD::Size{ 0, 0 };	// 2D size
 	float			m_fRotation		= 0.0f;
 

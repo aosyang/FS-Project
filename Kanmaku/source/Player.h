@@ -65,6 +65,9 @@ class Player : public Entity, public SGD::IListener {
 		int m_nLives = 3;
 		int m_nSenka = 0;
 
+		float m_fAccumulatedTime = 0.0f;
+		bool m_bPendingJump = false;
+
 		// properties
 		float m_fAccelerationRate;
 		float m_fSpeed;

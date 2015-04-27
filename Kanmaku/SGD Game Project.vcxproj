@@ -108,6 +108,10 @@
     <ClCompile Include="source\OptionMenuState.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Puff.cpp" />
+    <ClCompile Include="TinyXML\tinystr.cpp" />
+    <ClCompile Include="TinyXML\tinyxml.cpp" />
+    <ClCompile Include="TinyXML\tinyxmlerror.cpp" />
+    <ClCompile Include="TinyXML\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SGD Wrappers\SGD_AudioManager.h" />
@@ -146,6 +150,8 @@
     <ClInclude Include="source\OptionMenuState.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\Puff.h" />
+    <ClInclude Include="TinyXML\tinystr.h" />
+    <ClInclude Include="TinyXML\tinyxml.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

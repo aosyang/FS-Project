@@ -293,11 +293,11 @@
 		m_bCursorExitSe = false;
 	}
 
-#if _DEBUG
-	system("cls");
-	std::cout << "X: " <<pInput->GetCursorPosition().x << " Y: " << pInput->GetCursorPosition().y << std::endl;
-	
-#endif
+//#if _DEBUG
+//	system("cls");
+//	std::cout << "X: " <<pInput->GetCursorPosition().x << " Y: " << pInput->GetCursorPosition().y << std::endl;
+//	
+//#endif
 
 
 }

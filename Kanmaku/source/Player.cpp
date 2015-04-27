@@ -35,14 +35,18 @@ Player::~Player(void) {
 }
 
 
+// to-do change the struture;
+
 void Player::Update(float elapsedTime) {
+
+	if (SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::Space) || SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::W)) {
+		m_bPendingJump = true;
+	}
 
 	Puff* ptPuff = dynamic_cast<Puff*>(GameplayState::GetInstance()->GetPuff());
 
 	if (SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::MouseLeft)) {
 		// Allocate a CreateLaserMessage
-
-		
 
 		CreateBulletMessage* pMsg = new CreateBulletMessage(
 
@@ -57,6 +61,18 @@ void Player::Update(float elapsedTime) {
 		pMsg->QueueMessage();
 		pMsg = nullptr;
 	}
+
+	m_fAccumulatedTime += elapsedTime;
+	const static float frame = 1.0f / 60.0f;
+
+	if (m_fAccumulatedTime < frame)
+		return;
+
+	elapsedTime = frame;
+	while (m_fAccumulatedTime >= frame) {
+		m_fAccumulatedTime -= frame;
+	}
+
 
 	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A)) {
 		if (m_fSpeed < m_fMaxSpeed) {
@@ -87,13 +103,15 @@ void Player::Update(float elapsedTime) {
 	}
 
 
-	if (SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::Space) || SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::W)) {
+	if (m_bPendingJump) {
 #if _DEBUG
 		std::cout << m_ptPosition.y + m_szSize.height / 2 << '\n';
 #endif
 		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
-			m_vtVelocity.y = -500.0f;
+			m_vtVelocity.y = -1500.0f;
 		}
+
+		m_bPendingJump = false;
 	}
 
 	SGD::Vector vtNewVelocity{ -m_fSpeed, 0 };

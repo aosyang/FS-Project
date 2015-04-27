@@ -89,6 +89,12 @@ bool Game::Initialize( void )
 
 	// Store the starting time
 	m_ulGameTime = GetTickCount();
+
+	// Reset the FPS
+	m_unFPS = 60;
+	m_unFrames = 0;
+	m_fFPSTimer = 0.0f;
+
 	return true;	// success!
 }
 
@@ -129,6 +135,26 @@ int	Game::Update( void )
 			m_bFullScreen = false;
 		}
 	}
+
+	// Increase the FPS timer
+	m_fFPSTimer += elapsedTime;
+	m_unFrames++;
+
+	if (m_fFPSTimer >= 1.0f)		// 1 second refresh rate
+	{
+		m_unFPS = m_unFrames;
+		m_unFrames = 0;
+		m_fFPSTimer = 0.0f;
+	}
+
+	// Render the FPS
+	SGD::OStringStream output;
+	output << "FPS: " << m_unFPS;
+
+	SGD::GraphicsManager::GetInstance()->DrawString(
+		output.str().c_str(),
+		{ 0, 0 },
+		{ 0, 255, 0 });
 
 	return 0;		// keep running
 }
