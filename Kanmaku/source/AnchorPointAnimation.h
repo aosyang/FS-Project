@@ -70,6 +70,7 @@ private:
 	};
 
 	std::vector< Frame >	m_vFrames;
+	std::vector< Frame >	m_rvFrames;
 
 	// animation data
 	int						m_nCurrFrame	= 0;

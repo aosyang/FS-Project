@@ -61,6 +61,10 @@ void AnchorPointAnimation::InitialPlayer() {
 	m_vFrames[3] = { { 192, 0, 256, 64 }, { 32, 32 }, 0.1f };
 	m_vFrames[4] = { { 0, 64, 64, 128 }, { 32, 32 }, 0.05f };
 
+	m_rvFrames = m_vFrames;
+	std::reverse(m_rvFrames.begin(), m_rvFrames.end());
+
+
 	m_nCurrFrame = 0;
 
 	m_fTimeWaited = 0.0f;
@@ -86,12 +90,6 @@ void AnchorPointAnimation::Terminate( void )
 void AnchorPointAnimation::Update( float elapsedTime, bool isFlipped)
 {
 
-	std::vector< Frame > _vFrames = m_vFrames;
-	if (isFlipped) {
-		std::reverse(_vFrames.begin(), _vFrames.end());
-	}
-
-
 	// Is the animation paused?
 	if( m_bIsPlaying == false )
 		return;
@@ -100,28 +98,45 @@ void AnchorPointAnimation::Update( float elapsedTime, bool isFlipped)
 	// Increase the timer
 	m_fTimeWaited += elapsedTime * m_fSpeed;
 
-	// Is it time to move to the next frame?
-	if (m_fTimeWaited >= _vFrames[m_nCurrFrame].fDuration)
-	{
-		m_fTimeWaited = 0.0f;
-		++m_nCurrFrame;
+	if (isFlipped) {
+		// Is it time to move to the next frame?
+		if (m_fTimeWaited >= m_vFrames[m_nCurrFrame].fDuration) {
+			m_fTimeWaited = 0.0f;
+			++m_nCurrFrame;
 
+			// Has it reached the end?
+			if (m_nCurrFrame == m_vFrames.size()) {
+				// Should the animation loop from the beginning?
+				if (m_bIsLooping == true)
+					m_nCurrFrame = 0;
+				else {
+					// Stop on the last valid frame
+					--m_nCurrFrame;
+					m_bIsPlaying = false;
+					m_bIsFinished = true;
+				}
+			}
+		}
+	} else {
+		if (m_fTimeWaited >= m_rvFrames[m_nCurrFrame].fDuration) {
+			m_fTimeWaited = 0.0f;
+			++m_nCurrFrame;
 
-		// Has it reached the end?
-		if (m_nCurrFrame == _vFrames.size())
-		{
-			// Should the animation loop from the beginning?
-			if( m_bIsLooping == true )
-				m_nCurrFrame = 0;
-			else 
-			{
-				// Stop on the last valid frame
-				--m_nCurrFrame;
-				m_bIsPlaying = false;
-				m_bIsFinished = true;
+			// Has it reached the end?
+			if (m_nCurrFrame == m_rvFrames.size()) {
+				// Should the animation loop from the beginning?
+				if (m_bIsLooping == true)
+					m_nCurrFrame = 0;
+				else {
+					// Stop on the last valid frame
+					--m_nCurrFrame;
+					m_bIsPlaying = false;
+					m_bIsFinished = true;
+				}
 			}
 		}
 	}
+	
 }
 
 
@@ -148,15 +163,19 @@ void AnchorPointAnimation::Render( SGD::Point position, bool flipped, float scal
 	if( flipped == true )
 		scaleX = -scaleX;
 
-	std::vector< Frame > _vFrames = m_vFrames;
+
+	SGD::Rectangle frame;
+	SGD::Point anchor;
+
 	if (flipped) {
-		std::reverse(_vFrames.begin(), _vFrames.end());
+		// Retrieve the source rect for the current frame
+		frame = m_rvFrames[m_nCurrFrame].rFrame;
+		anchor = m_rvFrames[m_nCurrFrame].ptAnchor;
+	} else {
+		// Retrieve the source rect for the current frame
+		frame = m_vFrames[m_nCurrFrame].rFrame;
+		anchor = m_vFrames[m_nCurrFrame].ptAnchor;
 	}
-
-
-	// Retrieve the source rect for the current frame
-	SGD::Rectangle frame = _vFrames[m_nCurrFrame].rFrame;
-	SGD::Point anchor = _vFrames[m_nCurrFrame].ptAnchor;
 
 
 	// Draw the current frame, offset from the position by
@@ -174,31 +193,27 @@ void AnchorPointAnimation::Render( SGD::Point position, bool flipped, float scal
 //*********************************************************************//
 // GetRect
 //	- return the frame rect at the given position
-SGD::Rectangle	AnchorPointAnimation::GetRect( SGD::Point position, bool flipped,
-						float scale ) const
+SGD::Rectangle	AnchorPointAnimation::GetRect( SGD::Point position, bool flipped, float scale ) const
 {
 
-	std::vector< Frame > _vFrames = m_vFrames;
-
-	if (flipped) {
-		std::reverse(_vFrames.begin(), _vFrames.end());
-	}
-	// Retrieve the source rect for the current frame
-	SGD::Rectangle	frame = _vFrames[m_nCurrFrame].rFrame;
-	SGD::Point		anchor = _vFrames[m_nCurrFrame].ptAnchor;
 
 	// Is it flipped?
-	if( flipped == true )
-	{
+	if( flipped == true ) {
+		// Retrieve the source rect for the current frame
+
+		SGD::Rectangle frame = m_rvFrames[m_nCurrFrame].rFrame;
+		SGD::Point anchor = m_rvFrames[m_nCurrFrame].ptAnchor;
 		SGD::Rectangle result = { };
 		result.right	= position.x + (anchor.x * scale);
 		result.top		= position.y - (anchor.y * scale);
 		result.left		= result.right - (frame.ComputeWidth()  * scale);
 		result.bottom	= result.top   + (frame.ComputeHeight() * scale);
 		return result;
-	}
-	else
-	{
+	} else {
+		// Retrieve the source rect for the current frame
+
+		SGD::Rectangle frame = m_vFrames[m_nCurrFrame].rFrame;
+		SGD::Point anchor = m_vFrames[m_nCurrFrame].ptAnchor;
 		SGD::Rectangle result = { };
 		result.left		= position.x - (anchor.x * scale);
 		result.top		= position.y - (anchor.y * scale);
