@@ -21,9 +21,9 @@
 //	- hardcode the animation
 void AnchorPointAnimation::Initialize( void )
 {
+	/*
 	// Load the image
-	m_hImage = SGD::GraphicsManager::GetInstance()->LoadTexture(
-					L"resource/graphics/SGD_Anim_Explosion.png" );
+	m_hImage = SGD::GraphicsManager::GetInstance()->LoadTexture( L"resource/graphics/SGD_Anim_Explosion.png" );
 
 	m_vFrames.resize( 10 );		// 10 frames: 0->9
 
@@ -47,6 +47,27 @@ void AnchorPointAnimation::Initialize( void )
 	m_bIsPlaying		= false;
 	m_bIsLooping		= false;
 	m_bIsFinished		= false;
+	*/
+}
+
+void AnchorPointAnimation::InitialPlayer() {
+	m_hImage = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/Cus_NorthernPrincess.png");
+
+	m_vFrames.resize(4);		// 4 frames: 0->3
+
+	m_vFrames[0] = { {   0, 0,  64, 64 },	{ 32,32 }, 0.1f };	// source, position, duration
+	m_vFrames[1] = { {  64, 0, 128, 64 },	{ 32,32 }, 0.1f };
+	m_vFrames[2] = { { 128, 0, 192, 64 },	{ 32,32 }, 0.1f };
+	m_vFrames[3] = { { 192, 0, 256, 64 },	{ 32,32 }, 0.1f };
+
+	m_nCurrFrame = 0;
+
+	m_fTimeWaited = 0.0f;
+	m_fSpeed = 1.0f;
+
+	m_bIsPlaying = false;
+	m_bIsLooping = false;
+	m_bIsFinished = false;
 }
 
 //*********************************************************************//
@@ -61,8 +82,15 @@ void AnchorPointAnimation::Terminate( void )
 //*********************************************************************//
 // Update
 //	- run the animation timer
-void AnchorPointAnimation::Update( float elapsedTime )
+void AnchorPointAnimation::Update( float elapsedTime, bool isFlipped)
 {
+	std::vector< Frame > _vFrames = m_vFrames;
+
+	if (isFlipped) {
+		std::reverse(_vFrames.begin(), _vFrames.end());
+	}
+
+
 	// Is the animation paused?
 	if( m_bIsPlaying == false )
 		return;
@@ -72,14 +100,14 @@ void AnchorPointAnimation::Update( float elapsedTime )
 	m_fTimeWaited += elapsedTime * m_fSpeed;
 
 	// Is it time to move to the next frame?
-	if( m_fTimeWaited >= m_vFrames[ m_nCurrFrame ].fDuration )
+	if (m_fTimeWaited >= _vFrames[m_nCurrFrame].fDuration)
 	{
 		m_fTimeWaited = 0.0f;
 		++m_nCurrFrame;
 
 
 		// Has it reached the end?
-		if( m_nCurrFrame == m_vFrames.size() )
+		if (m_nCurrFrame == _vFrames.size())
 		{
 			// Should the animation loop from the beginning?
 			if( m_bIsLooping == true )
@@ -99,8 +127,7 @@ void AnchorPointAnimation::Update( float elapsedTime )
 //*********************************************************************//
 // Render
 //	- draw the current frame offset from the given position
-void AnchorPointAnimation::Render( SGD::Point position, bool flipped,
-								   float scale, SGD::Color color ) const
+void AnchorPointAnimation::Render( SGD::Point position, bool flipped, float scale, SGD::Color color ) const
 {
 	// Validate the image
 	SGD_ASSERT( m_hImage != SGD::INVALID_HANDLE,

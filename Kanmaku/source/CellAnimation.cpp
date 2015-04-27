@@ -17,11 +17,9 @@
 //	- set up the animation
 //	- should load from a file
 //	- hardcoded to use SGD_Anim_Explosion.png
-void CellAnimation::Initialize( void )
-{
+void CellAnimation::InitialExpoision(void) {
 	// Load the image
-	m_hImage = SGD::GraphicsManager::GetInstance()->LoadTexture(
-					L"resource/graphics/SGD_Anim_Explosion.png" );
+	m_hImage = SGD::GraphicsManager::GetInstance()->LoadTexture( L"resource/graphics/SGD_Anim_Explosion.png" );
 
 	m_nFrameWidth	= 60;
 	m_nFrameHeight	= 50;
@@ -38,6 +36,7 @@ void CellAnimation::Initialize( void )
 	m_bIsLooping	= false;
 	m_bIsFinished	= false;
 }
+
 
 //*********************************************************************//
 // Terminate

@@ -28,7 +28,9 @@ public:
 	
 	//*****************************************************************//
 	// Initialize & Terminate
-	void	Initialize	( void );	// should have one function/file per animation
+
+	// should have one function/file per animation
+	void	InitialExpoision	( void );	
 	void	Terminate	( void );
 	
 	//*****************************************************************//
@@ -45,6 +47,7 @@ public:
 	// Accessors:
 	bool	IsPlaying	( void ) const		{	return m_bIsPlaying;	}
 	bool	IsFinished	( void ) const		{	return m_bIsFinished;	}
+
 
 private:
 	//*****************************************************************//

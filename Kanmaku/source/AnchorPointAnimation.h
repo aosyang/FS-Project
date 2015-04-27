@@ -37,11 +37,12 @@ public:
 	// Initialize & Terminate
 	void	Initialize	( void );	// SHOULD have a config file
 	void	Terminate	( void );
+	void	InitialPlayer();
 
 
 	//*****************************************************************//
 	// Animation Controls:
-	void	Update		( float elapsedTime );
+	void	Update(float elapsedTime, bool isFlipped);
 	void	Render		( SGD::Point position, bool flipped = false, float scale = 1.0f, SGD::Color color = { } ) const;
 	
 	SGD::Rectangle GetRect( SGD::Point position, bool flipped = false, float scale = 1.0f ) const;

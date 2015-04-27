@@ -70,7 +70,10 @@
 	// loading assets
 #if _DEBUG
 	m_hBackgroundImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG.png");
-	m_hPlayerImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_PlayerEntity.png");
+
+	//m_hPlayerImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_PlayerEntity.png");
+	m_hPlayerImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/Cus_NorthernPrincess.png");
+
 	m_hPuffImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_Puff.png");
 	m_hBulletTypeA = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/kc_BulletTypeA.png");
 

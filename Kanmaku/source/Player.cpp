@@ -16,22 +16,37 @@
 
 #include "CreateBulletMessage.h"
 
+#include "AnchorPointAnimation.h"
+
 #if _DEBUG
 #include <iostream>
 #endif
 
 
+#define FRAME 1.0f / 60.0f
+
+
 Player::Player(void) : 
 	m_fSpeed(0.0f),
-	m_fAccelerationRate(768.0f),
-	m_fMaxSpeed(200.0f),
+	m_fAccelerationRate(512.0f),
+	m_fMaxSpeed(300.0f),
 	m_fGroundOffset(99.0f),
 	m_fWallOffset(192.0f) {
+
+
+	m_pCharaterAnim = new AnchorPointAnimation();
+	m_pCharaterAnim->InitialPlayer();
+	m_pCharaterAnim->Restart(true, 1.0f);
 
 }
 
 Player::~Player(void) {
 
+	if (m_pCharaterAnim != nullptr) {
+		m_pCharaterAnim->Terminate();
+		delete m_pCharaterAnim;
+		m_pCharaterAnim = nullptr;
+	}
 }
 
 
@@ -39,13 +54,15 @@ Player::~Player(void) {
 
 void Player::Update(float elapsedTime) {
 
-	if (SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::Space) || SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::W)) {
+	SGD::InputManager *ptInput = SGD::InputManager::GetInstance();
+
+	if (ptInput->IsKeyPressed(SGD::Key::Space) || ptInput->IsKeyPressed(SGD::Key::W)) {
 		m_bPendingJump = true;
 	}
 
 	Puff* ptPuff = dynamic_cast<Puff*>(GameplayState::GetInstance()->GetPuff());
 
-	if (SGD::InputManager::GetInstance()->IsKeyPressed(SGD::Key::MouseLeft)) {
+	if (ptInput->IsKeyPressed(SGD::Key::MouseLeft)) {
 		// Allocate a CreateLaserMessage
 
 		CreateBulletMessage* pMsg = new CreateBulletMessage(
@@ -62,33 +79,49 @@ void Player::Update(float elapsedTime) {
 		pMsg = nullptr;
 	}
 
+	//=============================================================
+	// independent phycis timer/buffer
+	//////////////////////////////////////////////////////////////
 	m_fAccumulatedTime += elapsedTime;
-	const static float frame = 1.0f / 60.0f;
 
-	if (m_fAccumulatedTime < frame)
-		return;
+	if (m_fAccumulatedTime < FRAME) return;
 
-	elapsedTime = frame;
-	while (m_fAccumulatedTime >= frame) {
-		m_fAccumulatedTime -= frame;
+	elapsedTime = FRAME;
+
+	while (m_fAccumulatedTime >= FRAME) {
+		m_fAccumulatedTime -= FRAME;
 	}
+	//=============================================================
+	// independent phycis timer/buffer
+	//////////////////////////////////////////////////////////////
 
-
-	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A)) {
+	if (ptInput->IsKeyDown(SGD::Key::A)) {
+		
 		if (m_fSpeed < m_fMaxSpeed) {
 			m_fSpeed += m_fAccelerationRate * elapsedTime;
 		}
+		m_bIsFlipped = true;
+		m_pCharaterAnim->Pause(false);
+	} else {
+		m_pCharaterAnim->Pause(true);
 
 	}
 
-	if (SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::D)) {
+	if (ptInput->IsKeyDown(SGD::Key::D)) {
+
 		if (m_fSpeed > -m_fMaxSpeed) {
 			m_fSpeed -= m_fAccelerationRate * elapsedTime;
 		}
+		m_bIsFlipped = false;
+		m_pCharaterAnim->Pause(false);
+	} else {
+		m_pCharaterAnim->Pause(true);
 
 	}
+	//	left and right control
+	if (!(ptInput->IsKeyDown(SGD::Key::D) || ptInput->IsKeyDown(SGD::Key::A))) {
+		m_pCharaterAnim->Restart(true, 1.0f);
 
-	if (!(SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::D) || SGD::InputManager::GetInstance()->IsKeyDown(SGD::Key::A))) {
 		if (m_ptPosition.y + m_szSize.height / 2 == GameplayState::GetInstance()->GetWorldSize().height - m_fGroundOffset) {
 			if (m_fSpeed > 0) {
 				if (m_fSpeed - (m_fAccelerationRate * 1.8f) * elapsedTime < 0) {
@@ -103,7 +136,7 @@ void Player::Update(float elapsedTime) {
 	}
 
 
-	if (m_bPendingJump) {
+	if (m_bPendingJump) {	//pre-Jump trigger "space and w"
 #if _DEBUG
 		std::cout << m_ptPosition.y + m_szSize.height / 2 << '\n';
 #endif
@@ -120,24 +153,42 @@ void Player::Update(float elapsedTime) {
  	m_vtVelocity += m_vtGravity;
 
 
-	Entity::Update(elapsedTime);
+
+	if (m_pCharaterAnim != nullptr) {
+
+		m_pCharaterAnim->Update(elapsedTime, m_bIsFlipped);
+
+
+		Entity::Update(elapsedTime);
+	}
+
+
 	StayInWorld();
 }
 
 void Player::Render(void) {
-	// Validate the image
-	SGD_ASSERT(m_hImage != SGD::INVALID_HANDLE, "Entity::Render - image was not set!");
 
-	SGD::Point ptOffset = SGD::Point{ 
-		(m_ptPosition - m_szSize / 2).x - GameplayState::GetInstance()->GetWorldCamPosition().x,
-		(m_ptPosition - m_szSize / 2).y - GameplayState::GetInstance()->GetWorldCamPosition().y 
-	};
-	SGD::Rectangle rectOffset = GetRect();
-	rectOffset.Offset(-GameplayState::GetInstance()->GetWorldCamPosition().x, -GameplayState::GetInstance()->GetWorldCamPosition().y);
+	if (m_pCharaterAnim != nullptr) {
 
-	// Draw the image
-	SGD::GraphicsManager::GetInstance()->DrawRectangle(rectOffset, SGD::Color(255, 255, 0));
-	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hImage, ptOffset, m_fRotation, m_szSize / 2, SGD::Color{ 255, 255, 255 });
+
+		// Validate the image
+		SGD_ASSERT(m_hImage != SGD::INVALID_HANDLE, "Entity::Render - image was not set!");
+
+		SGD::Point ptOffset = SGD::Point{ 
+			(m_ptPosition /*- m_szSize / 2*/).x - GameplayState::GetInstance()->GetWorldCamPosition().x,
+			(m_ptPosition /*- m_szSize / 2*/).y - GameplayState::GetInstance()->GetWorldCamPosition().y 
+		};
+		SGD::Rectangle rectOffset = GetRect();
+		rectOffset.Offset(-GameplayState::GetInstance()->GetWorldCamPosition().x, -GameplayState::GetInstance()->GetWorldCamPosition().y);
+
+		// Draw the image
+		SGD::GraphicsManager::GetInstance()->DrawRectangle(rectOffset, SGD::Color(255, 255, 0));
+		//SGD::GraphicsManager::GetInstance()->DrawTexture(m_hImage, ptOffset, m_fRotation, m_szSize / 2, SGD::Color{ 255, 255, 255 });
+		//SGD::GraphicsManager::GetInstance()->DrawTextureSection(m_hImage, ptOffset, {0.0f, 0.0f, 64.0f, 64.0f}, m_fRotation, m_szSize / 2, SGD::Color{ 255, 255, 255 });
+		m_pCharaterAnim->Render(ptOffset, m_bIsFlipped);
+
+	}
+
 }
 
 void Player::HandleCollision(const IEntity* pOther) {
