@@ -76,6 +76,12 @@ private:
 	//*******************************************************************
 	// Game Assets:
 	SGD::HTexture	m_hBackgroundImg = SGD::INVALID_HANDLE;
+
+	SGD::HTexture	m_hBackgroundImg_Front = SGD::INVALID_HANDLE;
+	SGD::HTexture	m_hBackgroundImg_Middle = SGD::INVALID_HANDLE;
+	SGD::HTexture	m_hBackgroundImg_Back = SGD::INVALID_HANDLE;
+
+
 	SGD::HTexture	m_hPlayerImg = SGD::INVALID_HANDLE;
 	SGD::HTexture	m_hPuffImg = SGD::INVALID_HANDLE;
 	SGD::HTexture	m_hBulletTypeA = SGD::INVALID_HANDLE;

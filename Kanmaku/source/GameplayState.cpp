@@ -71,6 +71,10 @@
 #if _DEBUG
 	m_hBackgroundImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG.png");
 
+	m_hBackgroundImg_Front = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG_Front.png");
+	m_hBackgroundImg_Middle = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG_Middle.png");
+	m_hBackgroundImg_Back = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_GameStateBG_Back.png");
+
 	//m_hPlayerImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/DEBUG_PlayerEntity.png");
 	m_hPlayerImg = SGD::GraphicsManager::GetInstance()->LoadTexture(L"resource/graphics/Cus_NorthernPrincess.png");
 
@@ -121,6 +125,12 @@
 	SGD::AudioManager*		pAudio = SGD::AudioManager::GetInstance();
 
 	pGraphics->UnloadTexture(m_hBackgroundImg);
+
+	pGraphics->UnloadTexture(m_hBackgroundImg_Front);
+	pGraphics->UnloadTexture(m_hBackgroundImg_Middle);
+	pGraphics->UnloadTexture(m_hBackgroundImg_Back);
+
+
 	pGraphics->UnloadTexture(m_hPlayerImg);
 	pGraphics->UnloadTexture(m_hPuffImg);
 	pGraphics->UnloadTexture(m_hBulletTypeA);
@@ -169,7 +179,16 @@
 
 	
 	// draw the background image
-	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg, -m_ptWorldCamPosition);
+	//SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg, -m_ptWorldCamPosition);
+
+	
+	SGD::Point offsetBack = { m_ptWorldCamPosition.x * 0.5f, m_ptWorldCamPosition.y * 0.5f };
+	SGD::Point offsetMiddle = { m_ptWorldCamPosition.x * 0.8f, m_ptWorldCamPosition.y * 0.8f };
+
+
+	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg_Back, -offsetBack);
+	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg_Middle, -offsetMiddle);
+	SGD::GraphicsManager::GetInstance()->DrawTexture(m_hBackgroundImg_Front, -m_ptWorldCamPosition);
 	
 	// Update the entities
 	m_pEntities->UpdateAll( elapsedTime );
@@ -177,6 +196,7 @@
 
 	//World Cam Update
 	//m_ptWorldCamPosition = m_pTank->GetPosition() - m_szScreenSize / 2;
+
 	SGD::Point CamOffset = m_pPlayer->GetPosition() - Game::GetInstance()->GetScreenSize() / 2;
 
 	if (CamOffset.y > 0) CamOffset.y = 0;

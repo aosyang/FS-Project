@@ -177,7 +177,6 @@ void AnchorPointAnimation::Render( SGD::Point position, bool flipped, float scal
 		anchor = m_vFrames[m_nCurrFrame].ptAnchor;
 	}
 
-
 	// Draw the current frame, offset from the position by
 	// the anchor amount (to get the top-left corner)
 	SGD::GraphicsManager::GetInstance()->DrawTextureSection(
